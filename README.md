@@ -1,2 +1,3 @@
-# deadheader
-Duplicate file finder/report
+# deadheader - Duplicate file finder/reporter
+
+Work in progress
