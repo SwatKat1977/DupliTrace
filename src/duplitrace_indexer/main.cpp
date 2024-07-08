@@ -21,6 +21,7 @@ Copyright 2024 DupliTrace Development Team
 #include <filesystem>
 #include "argparse/argparse.hpp"
 #include "ConfigurationLayout.h"
+#include "Service.h"
 
 const char DEFAULT_CONFIG_FILE[] = "./config.cfg";
 
@@ -56,6 +57,14 @@ int main(int argc, char **argv) {
     if (!std::filesystem::is_regular_file(config_file)) {
         std::cout << "[ERROR] Config file '" << config_file
             << "' is not a valid file/cannot be read" << std::endl;
+        return EXIT_FAILURE;
+    }
+
+    duplitrace::indexer::Service service;
+
+    if (!service.Initialise(&duplitrace::indexer::CONFIGURATION_LAYOUT_MAP,
+                            config_file))
+    {
         return EXIT_FAILURE;
     }
 

@@ -43,6 +43,8 @@ const char LOGGING_MAX_FILE_COUNT[] = "max_file_count";
 
 const char LOGGING_LOG_FORMAT[] = "log_format";
 const char LOGGING_LOG_FORMAT_DEFAULT[] = "%Y-%m-%d %H:%M:%S %^%l%$ [%n] %v";
+const int LOGGING_MAX_FILE_SIZE_DEFAULT = 1024;
+const int LOGGING_MAX_FILE_ROTATE_COUNT_DEFAULT = 2;
 
 const common::SectionList LoggerSettings = {
     {
@@ -71,13 +73,13 @@ const common::SectionList LoggerSettings = {
         LOGGING_MAX_FILE_SIZE,
         common::ConfigSetupItem(LOGGING_MAX_FILE_SIZE,
                                 common::CONFIG_ITEM_TYPE_INTEGER)
-                .DefaultValue(0)
+                .DefaultValue(LOGGING_MAX_FILE_SIZE_DEFAULT)
     },
     {
         LOGGING_MAX_FILE_COUNT,
         common::ConfigSetupItem(LOGGING_MAX_FILE_COUNT,
                                 common::CONFIG_ITEM_TYPE_INTEGER)
-                .DefaultValue(1)
+                .DefaultValue(LOGGING_MAX_FILE_ROTATE_COUNT_DEFAULT)
     },
     {
         LOGGING_LOG_FORMAT,

@@ -42,6 +42,9 @@ class Service {
      bool ReadConfiguration();
 
      bool InitialiseLogger();
+
+     void PrintConfigurationItems();
+
 };
 
 }   // namespace indexer

@@ -19,5 +19,16 @@ Copyright 2024 DupliTrace Development Team
 */
 #ifndef CONFIGURATIONLAYOUT_H_
 #define CONFIGURATIONLAYOUT_H_
+#include "ConfigSetup.h"
+#include "LoggerSettings.h"
+
+namespace duplitrace { namespace indexer {
+
+common::SectionsMap CONFIGURATION_LAYOUT_MAP = {
+    { LOGGING_SECTION, LoggerSettings }
+};
+
+}   // namespace indexer
+}   // namespace duplitrace
 
 #endif  // CONFIGURATIONLAYOUT_H_

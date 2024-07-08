@@ -27,7 +27,9 @@ Copyright 2024 DupliTrace Development Team
 #include "spdlog/sinks/rotating_file_sink.h"
 #include "spdlog/sinks/stdout_color_sinks.h"
 #include "Service.h"
+#include "Logger.h"
 #include "LoggerSettings.h"
+#include "Version.h"
 
 #define LOGGER_THREAD_SIZE  8192
 #define LOGGER_THREAD_COUNT 1
@@ -52,6 +54,16 @@ bool Service::Initialise(common::SectionsMap* layout, std::string file) {
     if (!InitialiseLogger()) {
         return false;
     }
+
+    LOGGER->info ("ITEMS Gateway Microservice V{0}.{1}.{2}-{3}",
+        common::VERSION_MAJOR, common::VERSION_MINOR,
+        common::VERSION_PATCH, common::VERSION_TAG);
+    LOGGER->info ("Copyright 2024 DupliTrace Development Team");
+    LOGGER->info ("Licensed under the GNU General Public License");
+
+    PrintConfigurationItems();
+
+    initialised_ = true;
 
     return initialised_;
 }
@@ -141,6 +153,26 @@ bool Service::InitialiseLogger() {
     spdlog::set_pattern(GET_LOGGING_LOG_FORMAT);
 
     return true;
+}
+
+void Service::PrintConfigurationItems() {
+    LOGGER->info("|=====================|");
+    LOGGER->info("|=== Configuration ===|");
+    LOGGER->info("|=====================|");
+
+    LOGGER->info("[LOGGING]");
+    LOGGER->info("-> Log Level      : {0}", config_manager_.GetStringEntry(
+                 "logging", "log_level").c_str());
+    LOGGER->info("-> Log To Console : {0}", config_manager_.GetStringEntry(
+                 "logging", "log_to_console").c_str ());
+    LOGGER->info("-> Log Filename   : {0}", config_manager_.GetStringEntry(
+                 "logging", "log_filename").c_str());
+    LOGGER->info("-> Max File Size  : {0:d} bytes", config_manager_.GetIntEntry(
+                 "logging", "max_file_size"));
+    LOGGER->info("-> Max File Count : {0:d}", config_manager_.GetIntEntry(
+                 "logging", "max_file_count"));
+    LOGGER->info("-> Log Format     : {0}", config_manager_.GetStringEntry(
+                 "logging", "log_format").c_str());
 }
 
 }   // namespace indexer
