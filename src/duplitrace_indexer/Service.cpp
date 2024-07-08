@@ -44,8 +44,7 @@ using namespace std::chrono_literals;
 
 static Service* service_instance;
 
-static void StopSignalHandler(int signal)
-{
+static void StopSignalHandler(int signal) {
     LOGGER->info("Service shutdown signal has been caught...");
     service_instance->NotifyShutdownRequested();
 }
