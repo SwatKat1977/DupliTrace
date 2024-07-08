@@ -19,13 +19,13 @@ Copyright 2024 DupliTrace Development Team
 */
 #ifndef SERVICE_H_
 #define SERVICE_H_
+#include <string>
 #include "ConfigManager.h"
 
 namespace duplitrace { namespace indexer {
 
 class Service {
  public:
-
      Service();
 
      bool Initialise(common::SectionsMap* layout, std::string file);

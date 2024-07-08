@@ -28,7 +28,7 @@ Copyright 2024 DupliTrace Development Team
 
 #if (defined( __WIN32__ ) || defined( _WIN32 )) && !defined(__ANDROID__)
 #  if defined(_MSC_VER)
-#    define DUPLITRACE_PLATFORM DUPLITRACE_PLATFORM_WINDOWS_MSVC 
+#    define DUPLITRACE_PLATFORM DUPLITRACE_PLATFORM_WINDOWS_MSVC
 #  else
 #    define DUPLITRACE_PLATFORM DUPLITRACE_PLATFORM_WINDOWS_CORE
 #  endif
@@ -36,16 +36,16 @@ Copyright 2024 DupliTrace Development Team
 #    define DUPLITRACE_PLATFORM DUPLITRACE_PLATFORM_LINUX
 #endif
 
-#define ItemsAssert( expr, mesg ) assert( (expr) && (mesg) )
+#define ItemsAssert(expr, mesg) assert((expr) && (mesg))
 
-std::string GetEnv (const char* field) {
+std::string GetEnv(const char* field) {
 #if (DUPLITRACE_PLATFORM == DUPLITRACE_PLATFORM_WINDOWS_MSVC)
     size_t len = 0;
     char buf[128];
-    bool ok = ::getenv_s (&len, buf, sizeof (buf), field) == 0;
+    bool ok = ::getenv_s(&len, buf, sizeof (buf), field) == 0;
     return ok ? buf : nullptr;
-#else // revert to getenv
-    char* buf = ::getenv (field);
+#else   // revert to getenv
+    char* buf = ::getenv(field);
     return buf ? buf : std::string{};
 #endif
 }

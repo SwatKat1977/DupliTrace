@@ -17,74 +17,73 @@ Copyright 2024 DupliTrace Development Team
     You should have received a copy of the GNU General Public License
     along with this program.If not, see < https://www.gnu.org/licenses/>.
 */
-#ifndef LOGGERSETTINGS_H
-#define LOGGERSETTINGS_H
+#ifndef LOGGERSETTINGS_H_
+#define LOGGERSETTINGS_H_
 #include <string>
 #include "ConfigSetup.h"
 #include "ConfigSetupItem.h"
 
 namespace duplitrace {
 
-const std::string LOGGING_SECTION = "logging";
+const char LOGGING_SECTION[] = "logging";
 
-const std::string LOGGING_LOG_LEVEL = "log_level";
-const std::string LOGGING_LOG_LEVEL_DEBUG = "DEBUG";
-const std::string LOGGING_LOG_LEVEL_INfO = "INFO";
+const char LOGGING_LOG_LEVEL[] = "log_level";
+const char LOGGING_LOG_LEVEL_DEBUG[] = "DEBUG";
+const char LOGGING_LOG_LEVEL_INfO[] = "INFO";
 
-const std::string LOGGING_LOG_TO_CONSOLE = "log_to_console";
-const std::string LOGGING_LOG_TO_CONSOLE_YES = "YES";
-const std::string LOGGING_LOG_TO_CONSOLE_NO = "NO";
+const char LOGGING_LOG_TO_CONSOLE[] = "log_to_console";
+const char LOGGING_LOG_TO_CONSOLE_YES[] = "YES";
+const char LOGGING_LOG_TO_CONSOLE_NO[] = "NO";
 
-const std::string LOGGING_LOG_FILENAME = "log_filename";
+const char LOGGING_LOG_FILENAME[] = "log_filename";
 
-const std::string LOGGING_MAX_FILE_SIZE = "max_file_size";
+const char LOGGING_MAX_FILE_SIZE[] = "max_file_size";
 
-const std::string LOGGING_MAX_FILE_COUNT = "max_file_count";
+const char LOGGING_MAX_FILE_COUNT[] = "max_file_count";
 
-const std::string LOGGING_LOG_FORMAT = "log_format";
-const std::string LOGGING_LOG_FORMAT_DEFAULT = "%Y-%m-%d %H:%M:%S %^%l%$ [%n] %v";
+const char LOGGING_LOG_FORMAT[] = "log_format";
+const char LOGGING_LOG_FORMAT_DEFAULT[] = "%Y-%m-%d %H:%M:%S %^%l%$ [%n] %v";
 
-const common::SectionList LoggerSettings =
-{
+const common::SectionList LoggerSettings = {
     {
         LOGGING_LOG_LEVEL,
         common::ConfigSetupItem(LOGGING_LOG_LEVEL,
                                 common::CONFIG_ITEM_TYPE_STRING)
-                .DefaultValue (LOGGING_LOG_LEVEL_INfO)
-                .ValidValues (common::StringList{ LOGGING_LOG_LEVEL_DEBUG,
-                                                  LOGGING_LOG_LEVEL_INfO })
+                .DefaultValue(LOGGING_LOG_LEVEL_INfO)
+                .ValidValues(common::StringList{ LOGGING_LOG_LEVEL_DEBUG,
+                                                 LOGGING_LOG_LEVEL_INfO })
     },
     {
         LOGGING_LOG_TO_CONSOLE,
         common::ConfigSetupItem(LOGGING_LOG_TO_CONSOLE,
                                 common::CONFIG_ITEM_TYPE_STRING)
-                .DefaultValue (LOGGING_LOG_TO_CONSOLE_NO)
-                .ValidValues (common::StringList{ LOGGING_LOG_TO_CONSOLE_YES,
-                                                  LOGGING_LOG_TO_CONSOLE_NO })
+                .DefaultValue(LOGGING_LOG_TO_CONSOLE_NO)
+                .ValidValues(common::StringList{ LOGGING_LOG_TO_CONSOLE_YES,
+                                                 LOGGING_LOG_TO_CONSOLE_NO })
     },
     {
         LOGGING_LOG_FILENAME,
-        common::ConfigSetupItem(LOGGING_LOG_FILENAME, 
+        common::ConfigSetupItem(LOGGING_LOG_FILENAME,
                                 common::CONFIG_ITEM_TYPE_STRING)
-                .DefaultValue ("")
+                .DefaultValue("")
     },
     {
         LOGGING_MAX_FILE_SIZE,
         common::ConfigSetupItem(LOGGING_MAX_FILE_SIZE,
                                 common::CONFIG_ITEM_TYPE_INTEGER)
-                .DefaultValue (0)
+                .DefaultValue(0)
     },
     {
         LOGGING_MAX_FILE_COUNT,
         common::ConfigSetupItem(LOGGING_MAX_FILE_COUNT,
                                 common::CONFIG_ITEM_TYPE_INTEGER)
-                .DefaultValue (1)
+                .DefaultValue(1)
     },
     {
         LOGGING_LOG_FORMAT,
         common::ConfigSetupItem(LOGGING_LOG_FORMAT,
                                 common::CONFIG_ITEM_TYPE_STRING)
-                .DefaultValue (LOGGING_LOG_FORMAT_DEFAULT)
+                .DefaultValue(LOGGING_LOG_FORMAT_DEFAULT)
     }
 };
 
@@ -107,4 +106,4 @@ const int ONE_MEGABYTE = 1048576;
 
 }   // namespace duplitrace
 
-#endif
+#endif  // LOGGERSETTINGS_H_

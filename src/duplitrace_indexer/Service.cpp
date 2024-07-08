@@ -17,7 +17,10 @@ Copyright 2024 DupliTrace Development Team
     You should have received a copy of the GNU General Public License
     along with this program.If not, see < https://www.gnu.org/licenses/>.
 */
+#include <memory>
 #include <stdexcept>
+#include <string>
+#include <vector>
 #include "spdlog/spdlog.h"
 #include "spdlog/async.h"
 #include "spdlog/sinks/basic_file_sink.h"
@@ -56,8 +59,7 @@ bool Service::Initialise(common::SectionsMap* layout, std::string file) {
 void Service::Execute() {
 }
 
-bool Service::ReadConfiguration()
-{
+bool Service::ReadConfiguration() {
     common::ConfigSetup layout = common::ConfigSetup(*config_layout_);
 
     config_manager_.Configure(&layout, config_file_, true);
@@ -65,87 +67,78 @@ bool Service::ReadConfiguration()
     return config_manager_.processConfig();
 }
 
-bool Service::InitialiseLogger ()
-{
-    try
-    {
+bool Service::InitialiseLogger() {
+    try {
         GET_LOGGING_LOG_TO_CONSOLE;
         GET_LOGGING_LOG_FILENAME;
         GET_LOGGING_MAX_FILE_SIZE;
         GET_LOGGING_MAX_FILE_COUNT;
         GET_LOGGING_LOG_FORMAT;
     }
-    catch (const std::invalid_argument& ex)
-    {
-        printf ("[FATAL ERROR] %s\n", ex.what ());
+    catch (const std::invalid_argument& ex) {
+        printf("[FATAL ERROR] %s\n", ex.what());
         return false;
     }
 
-    spdlog::init_thread_pool (LOGGER_THREAD_SIZE, LOGGER_THREAD_COUNT);
+    spdlog::init_thread_pool(LOGGER_THREAD_SIZE, LOGGER_THREAD_COUNT);
 
     std::vector<spdlog::sink_ptr> sinks;
 
-    if (GET_LOGGING_LOG_TO_CONSOLE == LOGGING_LOG_TO_CONSOLE_YES)
-    {
-        auto stdout_sink = std::make_shared<spdlog::sinks::stdout_color_sink_mt > ();
-        sinks.push_back (stdout_sink);
+    if (GET_LOGGING_LOG_TO_CONSOLE == LOGGING_LOG_TO_CONSOLE_YES) {
+        auto stdout_sink = \
+            std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
+        sinks.push_back(stdout_sink);
     }
 
-    if (!GET_LOGGING_LOG_FILENAME.empty ())
-    {
-        if (GET_LOGGING_MAX_FILE_SIZE)
-        {
-            try
-            {
+    if (!GET_LOGGING_LOG_FILENAME.empty()) {
+        if (GET_LOGGING_MAX_FILE_SIZE) {
+            try {
                 auto sink = std::make_shared<
                     spdlog::sinks::rotating_file_sink_mt> (
                         GET_LOGGING_LOG_FILENAME,
                         GET_LOGGING_MAX_FILE_SIZE,
                         GET_LOGGING_MAX_FILE_COUNT);
-                sink->set_level (spdlog::level::debug);
-                sinks.push_back (sink);
+                sink->set_level(spdlog::level::debug);
+                sinks.push_back(sink);
             }
-            catch (const spdlog::spdlog_ex& ex)
-            {
+            catch (const spdlog::spdlog_ex& ex) {
                 std::string errStr =
-                    std::string ("Unable to initialise rotating file log sink, reason: ") +
-                    std::string (ex.what ());
-                throw std::runtime_error (errStr);
+                    std::string("Unable to initialise rotating file log "
+                                "sink, reason: ") +
+                    std::string(ex.what());
+                throw std::runtime_error(errStr);
             }
-        }
-        else
-        {
-            try
-            {
+        } else {
+            try {
                 const bool truncate = true;
                 auto sink = std::make_shared<
                     spdlog::sinks::basic_file_sink_mt> (
-                        GET_LOGGING_LOG_FILENAME.c_str (),
+                        GET_LOGGING_LOG_FILENAME.c_str(),
                         truncate);
-                sink->set_level (spdlog::level::debug);
-                sinks.push_back (sink);
+                sink->set_level(spdlog::level::debug);
+                sinks.push_back(sink);
             }
-            catch (const spdlog::spdlog_ex& ex)
-            {
+            catch (const spdlog::spdlog_ex& ex) {
                 std::string errStr =
-                    std::string ("Unable to initialise file log sink, reason: ") +
-                    std::string (ex.what ());
-                throw std::runtime_error (errStr);
+                    std::string(
+                        "Unable to initialise file log sink, reason: ") +
+                    std::string(ex.what());
+                throw std::runtime_error(errStr);
             }
         }
     }
 
     auto logger = std::make_shared<spdlog::async_logger> (
         LOGGER_NAME,
-        sinks.begin (),
-        sinks.end (),
-        spdlog::thread_pool (),
+        sinks.begin(),
+        sinks.end(),
+        spdlog::thread_pool(),
         spdlog::async_overflow_policy::block);
-    spdlog::register_logger (logger);
+    spdlog::register_logger(logger);
 
     // Set the log format, based on the formatting pattern flags:
     // https://github.com/gabime/spdlog/wiki/3.-Custom-formatting
-    spdlog::set_pattern (GET_LOGGING_LOG_FORMAT);
+    spdlog::set_pattern(GET_LOGGING_LOG_FORMAT);
 
     return true;
 }
