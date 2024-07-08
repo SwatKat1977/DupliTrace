@@ -17,33 +17,14 @@ Copyright 2024 DupliTrace Development Team
     You should have received a copy of the GNU General Public License
     along with this program.If not, see < https://www.gnu.org/licenses/>.
 */
-#ifndef CONFIGSETUP_H_
-#define CONFIGSETUP_H_
-#include <map>
-#include <string>
-#include <vector>
-#include "ConfigSetupItem.h"
+#ifndef LOGGER_H_
+#define LOGGER_H_
+#include "spdlog/spdlog.h"
+#include "spdlog/async.h"
+#include "spdlog/sinks/basic_file_sink.h"
+#include "spdlog/sinks/rotating_file_sink.h"
+#include "spdlog/sinks/stdout_color_sinks.h"
 
-namespace duplitrace { namespace common {
+#define LOGGER spdlog::get ("logger")
 
-using SectionList = std::map<std::string, ConfigSetupItem>;
-using SectionsMap = std::map<std::string, SectionList>;
-using SectionKeysList = std::vector<std::string>;
-
-// Class that defines the configuaration Format
-class ConfigSetup {
- public:
-    explicit ConfigSetup(SectionsMap &setupItems);
-
-    SectionKeysList Sections();
-
-    SectionList Section(std::string name);
-
- private:
-    SectionsMap items_;
-};
-
-}   // namespace common
-}   // namespace duplitrace
-
-#endif  // CONFIGSETUP_H_
+#endif  // LOGGER_H_

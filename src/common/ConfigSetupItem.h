@@ -68,11 +68,11 @@ class ConfigSetupItem {
     ConfigItemDataType item_type_;
     bool is_unset_;
 
-    IntList valid_values_Int_;
-    StringList valid_values_Str_;
+    IntList valid_values_int_;
+    StringList valid_values_str_;
 
     int default_value_int_;
-    std::string default_value_str;
+    std::string default_value_str_;
 };
 
 }   // namespace common

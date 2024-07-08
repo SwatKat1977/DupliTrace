@@ -17,44 +17,18 @@ Copyright 2024 DupliTrace Development Team
     You should have received a copy of the GNU General Public License
     along with this program.If not, see < https://www.gnu.org/licenses/>.
 */
-#include <stdexcept>
-#include "ConfigSetup.h"
+#ifndef VERSION_H_
+#define VERSION_H_
+#include <string>
 
 namespace duplitrace { namespace common {
 
-ConfigSetup::ConfigSetup(SectionsMap &setupItems) : items_(setupItems) {
-}
-
-/*
-Get a list of sections available.
-
-returns:
-    List of strings that represent the sections available.
-*/
-SectionKeysList ConfigSetup::Sections() {
-    std::vector<std::string> sections;
-    for (auto it = items_.begin(); it != items_.end(); it++) {
-        sections.push_back(it->first);
-    }
-
-    return sections;
-}
-
-/*
-Get a list of items within a given sections.
-
-returns:
-    List of list of configuration items.
-*/
-SectionList ConfigSetup::Section(std::string sectionName) {
-    auto it = items_.find(sectionName);
-
-    if (it == items_.end()) {
-        throw std::invalid_argument("Invalid section");
-    }
-
-    return it->second;
-}
+    const std::string VERSION_MAJOR = "0";
+    const std::string VERSION_MINOR = "0";
+    const std::string VERSION_PATCH = "0";
+    const std::string VERSION_TAG = "Alpha-01";
 
 }   // namespace common
 }   // namespace duplitrace
+
+#endif  // VERSION_H_

@@ -71,7 +71,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>.;$(DUPLITRACE_ARGPARSE_INCLUDE);$(IncludePath)</IncludePath>
+    <IncludePath>.;$(DUPLITRACE_ARGPARSE_INCLUDE);../3rd_party/inireader;../common;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -105,7 +105,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
@@ -132,7 +132,28 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\common\ConfigManager.cpp" />
+    <ClCompile Include="..\common\ConfigSetup.cpp" />
+    <ClCompile Include="..\common\ConfigSetupItem.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Service.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\3rd_party\inireader\iniReader.h" />
+    <ClInclude Include="..\common\ConfigManager.h" />
+    <ClInclude Include="..\common\ConfigSetup.h" />
+    <ClInclude Include="..\common\ConfigSetupItem.h" />
+    <ClInclude Include="..\common\Logger.h" />
+    <ClInclude Include="..\common\LoggerSettings.h" />
+    <ClInclude Include="..\common\Platform.h" />
+    <ClInclude Include="..\common\Version.h" />
+    <ClInclude Include="ConfigurationLayout.h" />
+    <ClInclude Include="Service.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\README.md">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </None>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

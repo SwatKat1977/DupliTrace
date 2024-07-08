@@ -17,44 +17,34 @@ Copyright 2024 DupliTrace Development Team
     You should have received a copy of the GNU General Public License
     along with this program.If not, see < https://www.gnu.org/licenses/>.
 */
-#include <stdexcept>
-#include "ConfigSetup.h"
+#ifndef SERVICE_H_
+#define SERVICE_H_
+#include "ConfigManager.h"
 
-namespace duplitrace { namespace common {
+namespace duplitrace { namespace indexer {
 
-ConfigSetup::ConfigSetup(SectionsMap &setupItems) : items_(setupItems) {
-}
+class Service {
+ public:
 
-/*
-Get a list of sections available.
+     Service();
 
-returns:
-    List of strings that represent the sections available.
-*/
-SectionKeysList ConfigSetup::Sections() {
-    std::vector<std::string> sections;
-    for (auto it = items_.begin(); it != items_.end(); it++) {
-        sections.push_back(it->first);
-    }
+     bool Initialise(common::SectionsMap* layout, std::string file);
 
-    return sections;
-}
+     void Execute();
 
-/*
-Get a list of items within a given sections.
+ private:
+     bool initialised_;
+     std::string config_file_;
+     common::SectionsMap *config_layout_;
+     common::ConfigManager config_manager_;
+     bool shutdown_requested_;
 
-returns:
-    List of list of configuration items.
-*/
-SectionList ConfigSetup::Section(std::string sectionName) {
-    auto it = items_.find(sectionName);
+     bool ReadConfiguration();
 
-    if (it == items_.end()) {
-        throw std::invalid_argument("Invalid section");
-    }
+     bool InitialiseLogger();
+};
 
-    return it->second;
-}
-
-}   // namespace common
+}   // namespace indexer
 }   // namespace duplitrace
+
+#endif  // SERVICE_H_

@@ -23,70 +23,70 @@ namespace duplitrace { namespace common {
 
 ConfigSetupItem::ConfigSetupItem(
     std::string itemName,
-    ConfigItemDataType dataType) : m_itemName(itemName),
-                                    m_isRequired(false),
-                                    m_itemType(dataType),
-                                    m_isUnset(true),
-                                    m_defaultValueInt(0),
-                                    m_defaultValueStr("") {
+    ConfigItemDataType dataType) : item_name_(itemName),
+                                   is_required_(false),
+                                   item_type_(dataType),
+                                   is_unset_(true),
+                                   default_value_int_(0),
+                                   default_value_str_("") {
 }
 
 std::string ConfigSetupItem::ItemName() {
-    return m_itemName;
+    return item_name_;
 }
 
 ConfigItemDataType ConfigSetupItem::Type() {
-    return m_itemType;
+    return item_type_;
 }
 
 bool ConfigSetupItem::IsUnset() {
-    return m_isUnset;
+    return is_unset_;
 }
 
 bool ConfigSetupItem::IsRequired() {
-    return m_isRequired;
+    return is_required_;
 }
 
 int ConfigSetupItem::DefaultIntValue() {
-    return m_defaultValueInt;
+    return default_value_int_;
 }
 
 std::string ConfigSetupItem::DefaultStringValue() {
-    return m_defaultValueStr;
+    return default_value_str_;
 }
 
 IntList ConfigSetupItem::ValidIntValues() {
-    return m_validValuesInt;
+    return valid_values_int_;
 }
 
 StringList ConfigSetupItem::ValidStringValues() {
-    return m_validValuesStr;
+    return valid_values_str_;
 }
 
 ConfigSetupItem &ConfigSetupItem::IsRequired(bool state) {
-    m_isRequired = state;
+    is_required_ = state;
     return *this;
 }
 
 ConfigSetupItem &ConfigSetupItem::DefaultValue(int defaultValue) {
-    m_defaultValueInt = defaultValue;
-    m_isUnset = false;
+    default_value_int_ = defaultValue;
+    is_unset_ = false;
     return *this;
 }
 
 ConfigSetupItem &ConfigSetupItem::DefaultValue(std::string defaultValue) {
-    m_defaultValueStr = defaultValue;
-    m_isUnset = false;
+    default_value_str_ = defaultValue;
+    is_unset_ = false;
     return *this;
 }
 
 ConfigSetupItem &ConfigSetupItem::ValidValues(IntList validValue) {
-    m_validValuesInt = validValue;
+    valid_values_int_ = validValue;
     return *this;
 }
 
 ConfigSetupItem &ConfigSetupItem::ValidValues(StringList validValue) {
-    m_validValuesStr = validValue;
+    valid_values_str_ = validValue;
     return *this;
 }
 

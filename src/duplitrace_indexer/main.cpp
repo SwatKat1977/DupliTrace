@@ -19,28 +19,28 @@ Copyright 2024 DupliTrace Development Team
 */
 #include <cstdlib>
 #include <filesystem>
-#include "argparse.hpp"
+#include "argparse/argparse.hpp"
+#include "ConfigurationLayout.h"
 
-const std::string DEFAULT_CONFIG_FILE = "./config.cfg";
+const char DEFAULT_CONFIG_FILE[] = "./config.cfg";
 
 int main(int argc, char **argv) {
-
     bool verbose = false;
 
     argparse::ArgumentParser arguments_parser(argv[0]);
     arguments_parser.add_argument("-c", "--config")
         .default_value(DEFAULT_CONFIG_FILE)
         .help("Configuration file");
-    arguments_parser.add_argument ("--verbose")
-        .help ("increase output verbosity")
+    arguments_parser.add_argument("--verbose")
+        .help("increase output verbosity")
         .implicit_value(true)
-        .flag ();
+        .flag();
 
     try {
-        arguments_parser.parse_args (argc, argv);
+        arguments_parser.parse_args(argc, argv);
     }
     catch (const std::exception& err) {
-        std::cerr << err.what () << std::endl;
+        std::cerr << err.what() << std::endl;
         std::cerr << arguments_parser;
         return EXIT_FAILURE;
     }

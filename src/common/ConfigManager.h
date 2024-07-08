@@ -19,72 +19,65 @@ Copyright 2024 DupliTrace Development Team
 */
 #ifndef CONFIGMANAGER_H_
 #define CONFIGMANAGER_H_
+#include <map>
 #include <string>
-#include "INIReader.h"
+#include "iniReader.h"
 #include "ConfigSetup.h"
 
-namespace items
-{
-    namespace serviceFramework
-    {
-        class ConfigItemValue
-        {
-        public:
-            ConfigItemValue ()
-                : m_intValue (0), m_strValue ("")
-            {
-            }
+namespace duplitrace { namespace common {
 
-            ConfigItemDataType GetItemType () { return m_itemType; }
-            void SetItemType (ConfigItemDataType dataType) { m_itemType = dataType; }
+class ConfigItemValue {
+ public:
+    ConfigItemValue() : int_value_(0), str_value_("") {
+    }
 
-            int GetIntValue () { return m_intValue; }
-            void SetIntValue (int value) { m_intValue = value; }
+    ConfigItemDataType GetItemType() { return item_type_; }
+    void SetItemType(ConfigItemDataType dataType) { item_type_ = dataType; }
 
-            std::string GetStringValue () { return m_strValue; }
-            void SetStringValue (std::string value) { m_strValue = value; }
+    int GetIntValue() { return int_value_; }
+    void SetIntValue(int value) { int_value_ = value; }
 
-        private:
-            ConfigItemDataType m_itemType;
-            int m_intValue;
-            std::string m_strValue;
+    std::string GetStringValue() { return str_value_; }
+    void SetStringValue(std::string value) { str_value_ = value; }
 
-        };
+ private:
+    ConfigItemDataType item_type_;
+    int int_value_;
+    std::string str_value_;
+};
 
-        using ConfigItemValueItem = std::map<std::string, ConfigItemValue>;
-        using ConfigItemMap = std::map<std::string, ConfigItemValueItem>;
+using ConfigItemValueItem = std::map<std::string, ConfigItemValue>;
+using ConfigItemMap = std::map<std::string, ConfigItemValueItem>;
 
-        class ConfigManager
-        {
-        public:
-            ConfigManager ();
+class ConfigManager {
+ public:
+    ConfigManager();
 
-            void Configure (ConfigSetup* layout, std::string configFile = "", bool fileRequired = false);
+    void Configure(ConfigSetup* layout, std::string configFile = "",
+                   bool fileRequired = false);
 
-            bool processConfig ();
+    bool processConfig();
 
-            int GetIntEntry (std::string sectionName, std::string itemName);
+    int GetIntEntry(std::string sectionName, std::string itemName);
 
-            std::string GetStringEntry (std::string sectionName, std::string itemName);
+    std::string GetStringEntry(std::string sectionName, std::string itemName);
 
-        private:
-            std::string m_configFile;
-            bool m_hasConfigFile;
-            bool m_configFileRequired;
-            ConfigSetup* m_layout;
-            ConfigItemMap m_configItems;
-            INIReader* m_configReader;
+ private:
+    std::string config_file_;
+    bool has_config_file_;
+    bool config_file_required_;
+    ConfigSetup* layout_;
+    ConfigItemMap config_items_;
+    INIReader* config_reader_;
 
-            bool ReadConfiguration ();
+    bool ReadConfiguration();
 
-            int* ReadInt (std::string section,
-                ConfigSetupItem fmt);
+    int* ReadInt(std::string section, ConfigSetupItem fmt);
 
-            std::string ReadStr (std::string section,
-                ConfigSetupItem fmt);
-        };
+    std::string ReadStr(std::string section, ConfigSetupItem fmt);
+};
 
-    }   // namespace serviceFramework
-}   // namespace items
+}   // namespace common
+}   // namespace duplitrace
 
 #endif  // CONFIGMANAGER_H_
