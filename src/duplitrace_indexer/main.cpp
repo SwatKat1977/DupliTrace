@@ -1,8 +1,8 @@
 /*
-This source file is part of Python Node Editor
-For the latest info, see https://github.com/SwatKat1977/python_node_editor
+This source file is part of DupliTrace
+For the latest info, see https://github.com/SwatKat1977/DupliTrace
 
-Copyright 2024 Python Node Editor Development Team
+Copyright 2024 DupliTrace Development Team
 
     This program is free software : you can redistribute it and /or modify
     it under the terms of the GNU General Public License as published by
