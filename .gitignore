@@ -1,0 +1,4 @@
+# Visual Studio Intermediate Files
+.vs
+*.user
+X64
