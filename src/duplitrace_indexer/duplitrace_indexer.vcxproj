@@ -71,7 +71,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>.;$(DUPLITRACE_ARGPARSE_INCLUDE);../3rd_party/inireader;../common;$(IncludePath)</IncludePath>
+    <IncludePath>.;$(DUPLITRACE_ARGPARSE_INCLUDE);$(DUPLITRACE_SPDLOG_INCLUDE);../3rd_party/inireader;../common;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
