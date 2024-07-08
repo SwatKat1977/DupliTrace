@@ -32,6 +32,8 @@ class Service {
 
      void Execute();
 
+     void NotifyShutdownRequested();
+
  private:
      bool initialised_;
      std::string config_file_;
@@ -45,6 +47,7 @@ class Service {
 
      void PrintConfigurationItems();
 
+     void Shutdown();
 };
 
 }   // namespace indexer

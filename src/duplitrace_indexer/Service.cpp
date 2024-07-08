@@ -17,7 +17,9 @@ Copyright 2024 DupliTrace Development Team
     You should have received a copy of the GNU General Public License
     along with this program.If not, see < https://www.gnu.org/licenses/>.
 */
+#include <chrono>
 #include <memory>
+#include <signal.h>
 #include <stdexcept>
 #include <string>
 #include <vector>
@@ -29,6 +31,7 @@ Copyright 2024 DupliTrace Development Team
 #include "Service.h"
 #include "Logger.h"
 #include "LoggerSettings.h"
+#include "Platform.h"
 #include "Version.h"
 
 #define LOGGER_THREAD_SIZE  8192
@@ -36,6 +39,16 @@ Copyright 2024 DupliTrace Development Team
 #define LOGGER_NAME         "logger"
 
 namespace duplitrace { namespace indexer {
+
+using namespace std::chrono_literals;
+
+static Service* service_instance;
+
+static void StopSignalHandler(int signal)
+{
+    LOGGER->info("Service shutdown signal has been caught...");
+    service_instance->NotifyShutdownRequested();
+}
 
 Service::Service() : initialised_(false),
                      config_layout_(nullptr),
@@ -69,6 +82,25 @@ bool Service::Initialise(common::SectionsMap* layout, std::string file) {
 }
 
 void Service::Execute() {
+    // Windows does not handle SIGINT properly, so disable... see MSDN:
+    // https://learn.microsoft.com/en-us/cpp/c-runtime-library/reference/signal?view=msvc-170
+#if DUPLITRACE_PLATFORM == DUPLITRACE_PLATFORM_LINUX
+    LOGGER->info ("Setting up signal handler...");
+    struct sigaction sigIntHandler;
+    sigIntHandler.sa_handler = StopSignalHandler;
+    sigemptyset (&sigIntHandler.sa_mask);
+    sigIntHandler.sa_flags = 0;
+    sigaction (SIGINT, &sigIntHandler, NULL);
+#endif
+
+    while (!shutdown_requested_) {
+        std::this_thread::sleep_for(1ms);
+    }
+
+    Shutdown();
+}
+
+void Service::Shutdown() {
 }
 
 bool Service::ReadConfiguration() {
