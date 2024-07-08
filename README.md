@@ -10,6 +10,7 @@ The following header-only libraries are required by the project, you will need t
 Dependency | Repository | Environment Variable
 ---        | ---        | ---
 ArgParse | https://github.com/p-ranav/argparse | DUPLITRACE_ARGPARSE_INCLUDE
+spdlog   | https://github.com/gabime/spdlog | DUPLITRACE_SPDLOG_INCLUDE
 
 ### Dependencies - Embedded libraries
 
