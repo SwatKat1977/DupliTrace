@@ -20,3 +20,12 @@ The special characters have the following meaning:
 | `-`               | range      | Range of values
 | `,`               | comma      | Additional values
 | `/`               | slash      | Increments
+
+Examples: 
+
+| CRON Expression     | Description
+| ---                 | ---
+| * * * * * *         | Every second
+| */10 * * * * *      | Every 10 seconds
+| 0 12 9 * * *        | 9:12 AM every day
+| 0 30 12 * * MON-FRI | 12:30 PM, Monday to Friday
