@@ -136,6 +136,7 @@
     <ClCompile Include="..\common\ConfigSetup.cpp" />
     <ClCompile Include="..\common\ConfigSetupItem.cpp" />
     <ClCompile Include="..\common\Platform.cpp" />
+    <ClCompile Include="..\common\Utilities.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Service.cpp" />
   </ItemGroup>
@@ -147,7 +148,10 @@
     <ClInclude Include="..\common\Logger.h" />
     <ClInclude Include="..\common\LoggerSettings.h" />
     <ClInclude Include="..\common\Platform.h" />
+    <ClInclude Include="..\common\Utilities.h" />
     <ClInclude Include="..\common\Version.h" />
+    <ClInclude Include="..\cron_parser\CronParser.h" />
+    <ClInclude Include="..\cron_parser\CronParserConstants.h" />
     <ClInclude Include="ConfigurationLayout.h" />
     <ClInclude Include="Service.h" />
   </ItemGroup>

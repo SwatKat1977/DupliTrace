@@ -16,6 +16,9 @@
     <Filter Include="documentation">
       <UniqueIdentifier>{dbb6579b-0c44-48e9-9659-1ca95983d404}</UniqueIdentifier>
     </Filter>
+    <Filter Include="cron parser">
+      <UniqueIdentifier>{6b2192ea-3596-4bad-ae83-1f5174c68312}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -34,6 +37,9 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\common\Platform.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\common\Utilities.cpp">
       <Filter>common</Filter>
     </ClCompile>
   </ItemGroup>
@@ -67,6 +73,15 @@
     </ClInclude>
     <ClInclude Include="..\common\LoggerSettings.h">
       <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\cron_parser\CronParser.h">
+      <Filter>cron parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\common\Utilities.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\cron_parser\CronParserConstants.h">
+      <Filter>cron parser</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
