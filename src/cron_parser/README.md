@@ -14,6 +14,7 @@ Day of week  | Yes      | 0–6 or SUN–SAT  | * , -
 The special characters have the following meaning:
 
 Special character | Meaning    | Description
+---               | ---        | ---
 *                 | all values | All values
 -                 | range      | Range of values
 ,                 | comma      | Additional values
