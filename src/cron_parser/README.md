@@ -15,7 +15,7 @@ The special characters have the following meaning:
 
 Special character | Meaning    | Description
 ---               | ---        | ---
-*                 | all values | All values
+\*                | all values | All values
 -                 | range      | Range of values
 ,                 | comma      | Additional values
 /                 | slash      | Increments
