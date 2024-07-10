@@ -25,7 +25,7 @@ Copyright 2024 DupliTrace Development Team
 namespace duplitrace { namespace common {
 
 
-constexpr bool StringContains(std::string_view str, char const ch) noexcept {
+bool StringContains(std::string_view str, char const ch) noexcept {
     return std::string_view::npos != str.find_first_of(ch);
 }
 

@@ -23,12 +23,12 @@ Copyright 2024 DupliTrace Development Team
 
 namespace duplitrace { namespace common {
 
-constexpr bool StringContains(std::string_view str, char const ch) noexcept;
+bool StringContains(std::string_view str, char const ch) noexcept;
 
 std::vector<std::string> StringSplit(std::string_view text,
                                      char const delimiter);
 
-std::string ToUpper (std::string str);
+std::string ToUpper(std::string str);
 
 }   // namespace common
 }   // namespace duplitrace

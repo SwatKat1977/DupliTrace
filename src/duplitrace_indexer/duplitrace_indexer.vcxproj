@@ -137,6 +137,10 @@
     <ClCompile Include="..\common\ConfigSetupItem.cpp" />
     <ClCompile Include="..\common\Platform.cpp" />
     <ClCompile Include="..\common\Utilities.cpp" />
+    <ClCompile Include="..\cron_parser\CronParser.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+      </ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Service.cpp" />
   </ItemGroup>
@@ -150,7 +154,10 @@
     <ClInclude Include="..\common\Platform.h" />
     <ClInclude Include="..\common\Utilities.h" />
     <ClInclude Include="..\common\Version.h" />
-    <ClInclude Include="..\cron_parser\CronParser.h" />
+    <ClInclude Include="..\cron_parser\CronParser.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+      </ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="..\cron_parser\CronParserConstants.h" />
     <ClInclude Include="ConfigurationLayout.h" />
     <ClInclude Include="Service.h" />

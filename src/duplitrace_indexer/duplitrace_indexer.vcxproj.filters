@@ -42,6 +42,9 @@
     <ClCompile Include="..\common\Utilities.cpp">
       <Filter>common</Filter>
     </ClCompile>
+    <ClCompile Include="..\cron_parser\CronParser.cpp">
+      <Filter>cron parser</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ConfigurationLayout.h">
