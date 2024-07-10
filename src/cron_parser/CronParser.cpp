@@ -16,6 +16,10 @@ Copyright 2024 DupliTrace Development Team
 
     You should have received a copy of the GNU General Public License
     along with this program.If not, see < https://www.gnu.org/licenses/>.
+
+    Code is based on croncpp by Mariusbancila:
+        https://github.com/mariusbancila/croncpp
+
 */
 #include "CronParser.h"
 
