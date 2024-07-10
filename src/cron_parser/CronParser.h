@@ -60,12 +60,15 @@ class CronExpression {
 
      std::string Expression() { return expression_string_; }
 
-     BitsetSeconds SecondsBits() { return seconds_; }
-     BitsetMinutes MinutesBits() { return minutes_; }
-     BitsetHours HoursBits() { return hours_; }
-     BitsetDaysOfWeek DaysOfWeekBits() { return days_of_week_; }
-     BitsetDaysOfMonth DaysOfMonthBits() { return days_of_month_;  }
-     BitsetMonths MonthsBit() { return months_; }
+     BitsetSeconds Seconds() { return seconds_; }
+     BitsetMinutes Minutes() { return minutes_; }
+     BitsetHours Hours() { return hours_; }
+     BitsetDaysOfWeek DaysOfWeek() { return days_of_week_; }
+     BitsetDaysOfMonth DaysOfMonth() { return days_of_month_;  }
+     BitsetMonths Months() { return months_; }
+
+     bool operator==(const CronExpression &right);
+     bool operator!=(const CronExpression &right);
 
  private:
      BitsetSeconds seconds_;

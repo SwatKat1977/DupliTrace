@@ -19,7 +19,6 @@ Copyright 2024 DupliTrace Development Team
 
     Code is based on croncpp by Mariusbancila:
         https://github.com/mariusbancila/croncpp
-
 */
 #include "CronParser.h"
 
@@ -54,6 +53,20 @@ CronExpression::CronExpression(std::string_view expression) {
     SetMonths(fields[4], months_);
 
     expression_string_ = expression;
+}
+
+bool CronExpression::operator==(const CronExpression &right) {
+    return
+        seconds_ == right.seconds_ &&
+        minutes_ == right.minutes_ &&
+        hours_ == right.hours_ &&
+        days_of_week_ == right.days_of_week_ &&
+        days_of_month_ == right.days_of_month_ &&
+        months_ == right.months_;
+}
+
+bool CronExpression::operator!=(const CronExpression &right) {
+    return !(*this == right);
 }
 
 cronparser_int CronExpression::ToCronParserInt(std::string_view text) {
