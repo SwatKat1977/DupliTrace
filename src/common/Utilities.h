@@ -19,6 +19,7 @@ Copyright 2024 DupliTrace Development Team
 */
 #ifndef UTILITIES_H_
 #define UTILITIES_H_
+#include <ctime>
 #include <vector>
 
 namespace duplitrace { namespace common {
@@ -29,6 +30,10 @@ std::vector<std::string> StringSplit(std::string_view text,
                                      char const delimiter);
 
 std::string ToUpper(std::string str);
+
+std::tm* StdTimeToStdTm(std::time_t const* date, std::tm* const out);
+
+std::time_t StdTmToStdTime(std::tm& date);
 
 }   // namespace common
 }   // namespace duplitrace

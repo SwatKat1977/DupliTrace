@@ -79,7 +79,7 @@ class CronExpression {
      BitsetMonths months_;
      std::string     expression_string_;
 
-     cronparser_int ToCronParserInt (std::string_view text);
+     cronparser_int ToCronParserInt(std::string_view text);
 
      std::pair<cronparser_int, cronparser_int> CreateIntRange(
          std::string_view field,
@@ -87,9 +87,9 @@ class CronExpression {
          cronparser_int const maxval);
 
      template <size_t SIZE>
-     void SetCronField (std::string_view value, std::bitset<SIZE>& target,
-         cronparser_int const minValue,
-         cronparser_int const maxValue);
+     void SetCronField(std::string_view value, std::bitset<SIZE>& target,
+                       cronparser_int const minValue,
+                       cronparser_int const maxValue);
 
      void SetDaysOfWeek(std::string value, std::bitset<7>& target);
      void SetDaysOfMonth(std::string value, std::bitset<31>& target);

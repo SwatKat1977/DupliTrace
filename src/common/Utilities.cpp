@@ -21,6 +21,7 @@ Copyright 2024 DupliTrace Development Team
 #include <sstream>
 #include <string>
 #include "Utilities.h"
+#include "Platform.h"
 
 namespace duplitrace { namespace common {
 
@@ -49,6 +50,20 @@ std::string ToUpper(std::string str) {
         });
 
     return str;
+}
+
+std::tm* StdTimeToStdTm (std::time_t const* date, std::tm* const out) {
+#if (DUPLITRACE_PLATFORM == DUPLITRACE_PLATFORM_WINDOWS || \
+     DUPLITRACE_PLATFORM == DUPLITRACE_PLATFORM_WINDOWS_MSVC)
+    errno_t err = localtime_s (out, date);
+    return 0 == err ? out : nullptr;
+#else
+    return localtime_r (date, out);
+#endif
+}
+
+inline std::time_t StdTmToStdTime(std::tm& date) {
+    return std::mktime (&date);
 }
 
 }   // namespace common
