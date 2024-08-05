@@ -80,6 +80,13 @@ const cronparser_int CRONPARSER_MINIMUM_MONTHS = 1;
 /* The maximum value for the month field in a cron expression */
 const cronparser_int CRONPARSER_MAXIMUM_MONTHS = 12;
 
+const int CRONPARSER_BITFIELD_VALUE_SECONDS = 60;
+const int CRONPARSER_BITFIELD_VALUE_MINUTES = 60;
+const int CRONPARSER_BITFIELD_VALUE_HOURS = 24;
+const int CRONPARSER_BITFIELD_VALUE_DAYS_OF_MONTH = 31;
+const int CRONPARSER_BITFIELD_VALUE_MONTHS = 12;
+const int CRONPARSER_BITFIELD_VALUE_DAYS_OF_WEEK = 7;
+
 /*
  Days of the week are typically represented as:
  0 - Sunday

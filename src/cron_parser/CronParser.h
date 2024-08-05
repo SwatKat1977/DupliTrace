@@ -47,12 +47,12 @@ class  BadCronExpression : public std::runtime_error
     }
 };
 
-using BitsetSeconds = std::bitset<60>;
-using BitsetMinutes = std::bitset<60>;
-using BitsetHours = std::bitset<24>;
-using BitsetDaysOfWeek = std::bitset<7>;
-using BitsetDaysOfMonth = std::bitset<31>;
-using BitsetMonths = std::bitset<12>;
+using BitsetSeconds = std::bitset<CRONPARSER_BITFIELD_VALUE_SECONDS>;
+using BitsetMinutes = std::bitset<CRONPARSER_BITFIELD_VALUE_MINUTES>;
+using BitsetHours = std::bitset<CRONPARSER_BITFIELD_VALUE_HOURS>;
+using BitsetDaysOfWeek = std::bitset<CRONPARSER_BITFIELD_VALUE_DAYS_OF_WEEK>;
+using BitsetDaysOfMonth = std::bitset<CRONPARSER_BITFIELD_VALUE_DAYS_OF_MONTH>;
+using BitsetMonths = std::bitset<CRONPARSER_BITFIELD_VALUE_MONTHS>;
 
 class CronExpression {
  public:
@@ -60,15 +60,17 @@ class CronExpression {
 
      std::string Expression() { return expression_string_; }
 
-     BitsetSeconds Seconds() { return seconds_; }
-     BitsetMinutes Minutes() { return minutes_; }
-     BitsetHours Hours() { return hours_; }
-     BitsetDaysOfWeek DaysOfWeek() { return days_of_week_; }
-     BitsetDaysOfMonth DaysOfMonth() { return days_of_month_;  }
-     BitsetMonths Months() { return months_; }
+     BitsetSeconds Seconds() const { return seconds_; }
+     BitsetMinutes Minutes() const { return minutes_; }
+     BitsetHours Hours() const { return hours_; }
+     BitsetDaysOfWeek DaysOfWeek() const { return days_of_week_; }
+     BitsetDaysOfMonth DaysOfMonth() const { return days_of_month_;  }
+     BitsetMonths Months() const { return months_; }
 
      bool operator==(const CronExpression &right);
      bool operator!=(const CronExpression &right);
+
+     std::tm getNextTriggerTime(const std::tm& start_time);
 
  private:
      BitsetSeconds seconds_;

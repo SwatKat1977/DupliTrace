@@ -69,6 +69,51 @@ bool CronExpression::operator!=(const CronExpression &right) {
     return !(*this == right);
 }
 
+std::tm CronExpression::getNextTriggerTime(const std::tm& start_time) {
+    std::tm next_time = start_time;
+    next_time.tm_sec += 1; // Start checking from the next second
+
+    while (true) {
+        if (next_time.tm_sec >= CRONPARSER_BITFIELD_VALUE_SECONDS) {
+            next_time.tm_sec = 0;
+            next_time.tm_min += 1;
+        }
+
+        if (next_time.tm_min >= CRONPARSER_BITFIELD_VALUE_MINUTES) {
+            next_time.tm_min = 0;
+            next_time.tm_hour += 1;
+        }
+
+        if (next_time.tm_hour >= CRONPARSER_BITFIELD_VALUE_HOURS) {
+            next_time.tm_hour = 0;
+            next_time.tm_mday += 1;
+        }
+
+        if (next_time.tm_mday > CRONPARSER_BITFIELD_VALUE_DAYS_OF_MONTH) {
+            next_time.tm_mday = 1;
+            next_time.tm_mon += 1;
+        }
+
+        if (next_time.tm_mon >= CRONPARSER_BITFIELD_VALUE_MONTHS) {
+            next_time.tm_mon = 0;
+            next_time.tm_year += 1;
+        }
+
+        if (seconds_.test(next_time.tm_sec) &&
+            minutes_.test(next_time.tm_min) &&
+            hours_.test (next_time.tm_hour) &&
+            days_of_week_.test(next_time.tm_mday -1) &&
+            months_.test(next_time.tm_mon + 1) &&
+            days_of_week_.test (next_time.tm_wday)) {
+            break;
+        }
+
+        next_time.tm_sec += 1;
+    }
+
+    return next_time;
+}
+
 cronparser_int CronExpression::ToCronParserInt(std::string_view text) {
     try {
         return static_cast<cronparser_int>(std::stoul (text.data ()));
