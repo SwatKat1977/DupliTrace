@@ -71,39 +71,79 @@ bool CronExpression::operator!=(const CronExpression &right) {
 
 std::tm CronExpression::getNextTriggerTime(const std::tm& start_time) {
     std::tm next_time = start_time;
-    next_time.tm_sec += 1; // Start checking from the next second
+
+    // Start checking from the next second
+    next_time.tm_sec += 1;
 
     while (true) {
+
+        // If seconds exceed the maximum allowed value
+        // (CRONPARSER_BITFIELD_VALUE_SECONDS), reset to 0 and increment
+        // minutes.
         if (next_time.tm_sec >= CRONPARSER_BITFIELD_VALUE_SECONDS) {
             next_time.tm_sec = 0;
             next_time.tm_min += 1;
         }
 
+        // If minutes exceed the maximum allowed value
+        // (CRONPARSER_BITFIELD_VALUE_MINUTES), reset to 0 and increment hours.
         if (next_time.tm_min >= CRONPARSER_BITFIELD_VALUE_MINUTES) {
             next_time.tm_min = 0;
             next_time.tm_hour += 1;
         }
 
+        // If hours exceed the maximum allowed value
+        // (CRONPARSER_BITFIELD_VALUE_HOURS), reset to 0 and increment the day
+        // of the month.
         if (next_time.tm_hour >= CRONPARSER_BITFIELD_VALUE_HOURS) {
             next_time.tm_hour = 0;
             next_time.tm_mday += 1;
         }
 
-        if (next_time.tm_mday > CRONPARSER_BITFIELD_VALUE_DAYS_OF_MONTH) {
+        // Handle non-existent dates (e.g., April 31) and leap years (e.g.,
+        // February 30).
+        if (next_time.tm_mday > CRONPARSER_BITFIELD_VALUE_DAYS_OF_MONTH ||
+            (next_time.tm_mon == 1 && next_time.tm_mday == 30 &&
+            !((next_time.tm_year + 1900) % 4 == 0 &&
+            ((next_time.tm_year + 1900) % 100 != 0 ||
+            (next_time.tm_year + 1900) % 400 == 0)))) {
             next_time.tm_mday = 1;
             next_time.tm_mon += 1;
         }
 
+        // If months exceed the maximum allowed value
+        // (CRONPARSER_BITFIELD_VALUE_MONTHS), reset to 0 and increment the
+        // year.
         if (next_time.tm_mon >= CRONPARSER_BITFIELD_VALUE_MONTHS) {
             next_time.tm_mon = 0;
             next_time.tm_year += 1;
         }
 
+        // Normalise the time structure after any changes
+        std::mktime (&next_time);
+
+        // Check if the current next_time values match the cron expression
+        // fields (seconds, minutes, hours, days of the month, months, and days
+        // of the week).The.test () method is used to check if the specific
+        // field value is valid according to the cron expression.
+        // * seconds_.test (next_time.tm_sec) : Checks if the current second is
+        //   valid.
+        // * minutes_.test (next_time.tm_min) : Checks if the current minute is
+        //   valid.
+        // * hours_.test (next_time.tm_hour) : Checks if the current hour is
+        //   valid.
+        // * days_of_week_.test (next_time.tm_mday - 1) : Checks if the current
+        //   day of the month is valid (subtracting 1 because tm_mday is
+        //   1 - based).
+        // * months_.test (next_time.tm_mon) : Checks if the current month is
+        //    valid.
+        // * days_of_week_.test (next_time.tm_wday) : Checks if the current day
+        //   of the week is valid.
         if (seconds_.test(next_time.tm_sec) &&
             minutes_.test(next_time.tm_min) &&
-            hours_.test (next_time.tm_hour) &&
-            days_of_week_.test(next_time.tm_mday -1) &&
-            months_.test(next_time.tm_mon + 1) &&
+            hours_.test(next_time.tm_hour) &&
+            days_of_week_.test(static_cast<size_t>(next_time.tm_mday) -1) &&
+            months_.test(next_time.tm_mon) &&
             days_of_week_.test (next_time.tm_wday)) {
             break;
         }
