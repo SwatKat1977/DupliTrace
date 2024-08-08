@@ -17,16 +17,50 @@ Copyright 2024 DupliTrace Development Team
     You should have received a copy of the GNU General Public License
     along with this program.If not, see < https://www.gnu.org/licenses/>.
 */
-#include <cstdlib>
 #include <filesystem>
+#include <string>
+#include <thread>
 #include "argparse/argparse.hpp"
 #include "ConfigurationLayout.h"
 #include "Service.h"
+#include "../cron_parser/CronParser.h"
 
 const char DEFAULT_CONFIG_FILE[] = "./config.cfg";
 
-int main(int argc, char **argv) {
+int main (int argc, char** argv) {
     bool verbose = false;
+
+    std::bitset<10> target;
+    target.set (9);
+    std::cout << target << "\n";
+
+    auto exp = duplitrace::cronparser::CronExpression ("1-5,8-18 * * * * *");
+    std::cout << "Expression      : " << exp.Expression () << "\n";
+    std::cout << "=> Seconds      : '" << exp.Seconds () << "'\n";
+    std::cout << "=> Minutes      : '" << exp.Minutes () << "'\n";
+    std::cout << "=> Hours        : '" << exp.Hours () << "'\n";
+    std::cout << "=> Days of Week : '" << exp.DaysOfWeek () << "'\n";
+
+    for (int i = 0; i < 61; i++) {
+        std::time_t t = std::time (nullptr);
+        std::tm start_time = *std::localtime (&t);
+        std::tm next_time = exp.getNextTriggerTime (start_time);
+        char buffer[80];
+        strftime (buffer, 80, "%Y-%m-%d %H:%M:%S", &next_time);
+        std::cout << "Next trigger time: " << buffer << std::endl;
+
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+    }
+
+    auto nextty = duplitrace::cronparser::CronExpression ("5,18 * * * * *");
+    std::cout << "Next is equal, right .. wrong? " << (nextty == exp) << "\n";
+    std::cout << "Next is not equal, right? " << (nextty != exp) << "\n";
+
+    auto righty = duplitrace::cronparser::CronExpression ("1-5,8-18 * * * * *");
+    std::cout << "Righty is equal, right? " << (righty == exp) << "\n";
+    std::cout << "Next is not equal, right .. wrong? " << (righty != exp) << "\n";
+
+    return 0;
 
     argparse::ArgumentParser arguments_parser(argv[0]);
     arguments_parser.add_argument("-c", "--config")

@@ -99,6 +99,9 @@ void Service::Execute() {
     Shutdown();
 }
 
+void Service::NotifyShutdownRequested() {
+}
+
 void Service::Shutdown() {
 }
 
