@@ -24,6 +24,9 @@ Copyright 2024 DupliTrace Development Team
 #define CRONPARSER_H_
 #include <bitset>
 #include <stdexcept>
+#include <string>
+#include <utility>
+#include <vector>
 #include "Platform.h"
 #include "Utilities.h"
 #include "CronParserConstants.h"
@@ -39,11 +42,10 @@ Copyright 2024 DupliTrace Development Team
 
 namespace duplitrace { namespace cronparser {
 
-class  BadCronExpression : public std::runtime_error
-{
+class  BadCronExpression : public std::runtime_error {
  public:
     explicit BadCronExpression(std::string_view msg) :
-        std::runtime_error(msg.data ()) {
+        std::runtime_error(msg.data()) {
     }
 };
 
@@ -56,7 +58,7 @@ using BitsetMonths = std::bitset<CRONPARSER_BITFIELD_VALUE_MONTHS>;
 
 class CronExpression {
  public:
-     CronExpression(std::string_view expression);
+     explicit CronExpression(std::string_view expression);
 
      std::string Expression() { return expression_string_; }
 

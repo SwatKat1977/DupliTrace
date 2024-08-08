@@ -33,12 +33,12 @@ CronExpression::CronExpression(std::string_view expression) {
         throw BadCronExpression("Invalid empty cron expression");
 
     auto fields = common::StringSplit(expression, ' ');
-    fields.erase (
-        std::remove_if (std::begin (fields), std::end (fields),
+    fields.erase(
+        std::remove_if(std::begin(fields), std::end(fields),
             [](std::string_view s) {return s.empty (); }),
-        std::end (fields));
+        std::end(fields));
 
-    if (fields.size () != 6)
+    if (fields.size() != 6)
         throw BadCronExpression("cron expression must have six fields");
 
     SetCronField(fields[0], seconds_, CRONPARSER_MINIMUM_SECONDS,
@@ -76,7 +76,6 @@ std::tm CronExpression::getNextTriggerTime(const std::tm& start_time) {
     next_time.tm_sec += 1;
 
     while (true) {
-
         // If seconds exceed the maximum allowed value
         // (CRONPARSER_BITFIELD_VALUE_SECONDS), reset to 0 and increment
         // minutes.
@@ -120,7 +119,7 @@ std::tm CronExpression::getNextTriggerTime(const std::tm& start_time) {
         }
 
         // Normalise the time structure after any changes
-        std::mktime (&next_time);
+        std::mktime(&next_time);
 
         // Check if the current next_time values match the cron expression
         // fields (seconds, minutes, hours, days of the month, months, and days
@@ -142,9 +141,9 @@ std::tm CronExpression::getNextTriggerTime(const std::tm& start_time) {
         if (seconds_.test(next_time.tm_sec) &&
             minutes_.test(next_time.tm_min) &&
             hours_.test(next_time.tm_hour) &&
-            days_of_week_.test(static_cast<size_t>(next_time.tm_mday) -1) &&
+            days_of_month_.test(static_cast<size_t>(next_time.tm_mday) -1) &&
             months_.test(next_time.tm_mon) &&
-            days_of_week_.test (next_time.tm_wday)) {
+            days_of_week_.test(next_time.tm_wday)) {
             break;
         }
 
@@ -159,11 +158,11 @@ cronparser_int CronExpression::ToCronParserInt(std::string_view text) {
         return static_cast<cronparser_int>(std::stoul (text.data ()));
     }
     catch (std::exception const& ex) {
-        throw BadCronExpression(ex.what ());
+        throw BadCronExpression(ex.what());
     }
 }
 
-std::pair<cronparser_int, cronparser_int> CronExpression::CreateIntRange (
+std::pair<cronparser_int, cronparser_int> CronExpression::CreateIntRange(
         std::string_view field,
         cronparser_int const minval,
         cronparser_int const maxval) {
@@ -173,12 +172,10 @@ std::pair<cronparser_int, cronparser_int> CronExpression::CreateIntRange (
     if (field.size() == 1 && field[0] == SPECIAL_CHARACTER_ASTERISK) {
         firstValue = minval;
         lastValue = maxval;
-    }
-    else if (!common::StringContains(field, SPECIAL_CHARACTER_HYPHEN)) {
+    } else if (!common::StringContains(field, SPECIAL_CHARACTER_HYPHEN)) {
         firstValue = ToCronParserInt(field);
         lastValue = firstValue;
-    }
-    else {
+    } else {
         auto parts = common::StringSplit(field, SPECIAL_CHARACTER_HYPHEN);
         if (parts.size () != 2)
             throw BadCronExpression("Specified range requires two fields");
@@ -201,9 +198,10 @@ std::pair<cronparser_int, cronparser_int> CronExpression::CreateIntRange (
 }
 
 template <size_t SIZE>
-void CronExpression::SetCronField (std::string_view value, std::bitset<SIZE>& target,
-    cronparser_int const minValue,
-    cronparser_int const maxValue) {
+void CronExpression::SetCronField(std::string_view value,
+                                  std::bitset<SIZE>& target,
+                                  cronparser_int const minValue,
+                                  cronparser_int const maxValue) {
     // Check that cron field doesn't end with a comma.
     if (value.length() > 0 &&
         value[value.length() - 1] == SPECIAL_CHARACTER_COMMA) {
@@ -212,8 +210,8 @@ void CronExpression::SetCronField (std::string_view value, std::bitset<SIZE>& ta
 
     // Split the string with the ',' delimiter, if the fields are empty then
     // generate an exception.
-    auto fields = common::StringSplit (value, SPECIAL_CHARACTER_COMMA);
-    if (fields.empty ()) {
+    auto fields = common::StringSplit(value, SPECIAL_CHARACTER_COMMA);
+    if (fields.empty()) {
         throw BadCronExpression("Cron expression cannot be parsed");
     }
 
@@ -221,14 +219,14 @@ void CronExpression::SetCronField (std::string_view value, std::bitset<SIZE>& ta
         if (!common::StringContains(field, '/')) {
             auto [first, last] = CreateIntRange(field, minValue, maxValue);
 
-            for (cronparser_int i = first - minValue; i <= last - minValue; ++i) {
-                target.set (i);
+            for (cronparser_int i = first - minValue; i <= last - minValue;
+                 ++i) {
+                target.set(i);
             }
-        }
-        else {
+        } else {
             auto parts = common::StringSplit(field, '/');
-            if (parts.size () != 2)
-                throw BadCronExpression ("Incrementer must have two fields");
+            if (parts.size() != 2)
+                throw BadCronExpression("Incrementer must have two fields");
 
             auto [first, last] = CreateIntRange(parts[0], minValue, maxValue);
 
@@ -242,7 +240,7 @@ void CronExpression::SetCronField (std::string_view value, std::bitset<SIZE>& ta
 
             for (cronparser_int i = first - minValue; i <= last - minValue;
                 i += delta) {
-                target.set (i);
+                target.set(i);
             }
         }
     }
@@ -278,11 +276,10 @@ void CronExpression::SetMonths(std::string value, std::bitset<12>& target) {
 
 std::string CronExpression::ReplaceOrdinals(
     std::string text, std::vector<std::string> const& replacement) {
-    for (size_t i = 0; i < replacement.size (); ++i)
-    {
-        auto pos = text.find (replacement[i]);
+    for (size_t i = 0; i < replacement.size(); ++i) {
+        auto pos = text.find(replacement[i]);
         if (std::string::npos != pos)
-            text.replace (pos, 3, std::to_string (i));
+            text.replace(pos, 3, std::to_string(i));
     }
 
     return text;

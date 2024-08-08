@@ -19,6 +19,8 @@ Copyright 2024 DupliTrace Development Team
 */
 #ifndef CRONPARSERCONSTANTS_H_
 #define CRONPARSERCONSTANTS_H_
+#include <string>
+#include <vector>
 #include "Platform.h"
 
 #if (DUPLITRACE_PLATFORM == DUPLITRACE_PLATFORM_WINDOWS_MSVC)
@@ -34,8 +36,7 @@ namespace duplitrace { namespace cronparser {
 
 using cronparser_int  = uint8_t;
 
-enum class cron_field
-{
+enum class cron_field {
     seconds,
     minutes,
     hours,
