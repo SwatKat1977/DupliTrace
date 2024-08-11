@@ -1,1 +1,13 @@
+name: Build | Google Test Docker Image
+on:
+  push:
+    # Set branch to be invalid on purpose!
+    branches:
+      - 'INVALID'
 
+  workflow_dispatch:
+    inputs:
+      push_to_registry:
+        type: boolean
+        description: Push to Registry
+        required: true
