@@ -30,3 +30,23 @@ jobs:
 
       - name: Checkout code
         uses: actions/checkout@v3
+
+      - name: Determine current branch
+        run: |
+          if [[ $GITHUB_REF == 'refs/heads/main' ]]; then
+              echo "BUILD_TAG=duplitrace/duplitrace_gtest:LATEST" >> "$GITHUB_ENV"
+          else
+              echo "BUILD_TAG=duplitrace/duplitrace_gtest:${GITHUB_REF##*/}" >> "$GITHUB_ENV"
+          fi
+
+      - name: Build and push Docker Image
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: docker/Dockerfile.googleTest
+          push: ${{ inputs.push_to_registry }}
+          no-cache: true
+          tags: ${{ env.BUILD_TAG }}
+          platforms: |
+              linux/arm64
+              linux/amd64
