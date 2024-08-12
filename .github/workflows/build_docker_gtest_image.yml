@@ -39,20 +39,11 @@ jobs:
 
       - name: Determine current branch
         run: |
-          if [[ $GITHUB_REF == 'refs/heads/main' ]]; then
-              echo "BUILD_TAG=duplitrace/duplitrace_gtest:LATEST" >> "$GITHUB_ENV"
+          if [ "${{ github.event.inputs.docker_tag }}" = "NIGHTLY" ]; then
+            echo "|=> Docker tag : NIGHTLY."
+            echo "BUILD_TAG=duplitrace/duplitrace_gtest:NIGHTLY" >> "$GITHUB_ENV"            
           else
-              echo "BUILD_TAG=duplitrace/duplitrace_gtest:${GITHUB_REF##*/}" >> "$GITHUB_ENV"
+            echo "|=> Docker tag : ${{ github.event.inputs.docker_tag }}"
+            echo "BUILD_TAG=duplitrace/duplitrace_gtest:${{ github.event.inputs.docker_tag }}" >> "$GITHUB_ENV"
+            exit 1
           fi
-
-      - name: Build and push Docker Image
-        uses: docker/build-push-action@v3
-        with:
-          context: .
-          file: docker/Dockerfile.googleTest
-          push: ${{ inputs.push_to_registry }}
-          no-cache: true
-          tags: ${{ env.BUILD_TAG }}
-          platforms: |
-              linux/arm64
-              linux/amd64
