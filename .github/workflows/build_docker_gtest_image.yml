@@ -39,11 +39,12 @@ jobs:
 
       - name: Determine current branch
         run: |
-          if [ "$DOCKER_TAG" = "NIGHTLY" ]; then
+          #if [ "${{ github.event.inputs.docker_tag }}" = "NIGHTLY" ]; then
+          if: [ "${{ github.event.inputs.DOCKER_TAG = "NIGHTLY" }}" ]; then
             echo "|=> Docker tag : NIGHTLY."
             echo "BUILD_TAG=duplitrace/duplitrace_gtest:NIGHTLY" >> "$GITHUB_ENV"            
           else
             echo "|=> Docker tag : $DOCKER_TAG"
-            echo "BUILD_TAG=duplitrace/duplitrace_gtest:$DOCKER_TAG" >> "$GITHUB_ENV"
+            echo "BUILD_TAG=duplitrace/duplitrace_gtest:${{ github.event.inputs.docker_tag }}" >> "$GITHUB_ENV"
             exit 1
           fi
