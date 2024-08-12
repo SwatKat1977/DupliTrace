@@ -43,7 +43,7 @@ jobs:
             echo "|=> Docker tag : NIGHTLY."
             echo "BUILD_TAG=duplitrace/duplitrace_gtest:NIGHTLY" >> "$GITHUB_ENV"            
           else
-            echo "|=> Docker tag : ${{ github.event.inputs.docker_tag }}"
-            echo "BUILD_TAG=duplitrace/duplitrace_gtest:${{ github.event.inputs.docker_tag }}" >> "$GITHUB_ENV"
+            echo "|=> Docker tag : $DOCKER_TAG"
+            echo "BUILD_TAG=duplitrace/duplitrace_gtest:$DOCKER_TAG" >> "$GITHUB_ENV"
             exit 1
           fi
