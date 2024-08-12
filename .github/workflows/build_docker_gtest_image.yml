@@ -7,7 +7,7 @@ on:
         description: Push to Registry
         required: true
 
-      docker_tag:
+      DOCKER_TAG:
         type: string
         description: Docker Tag
         required: true
@@ -39,7 +39,7 @@ jobs:
 
       - name: Determine current branch
         run: |
-          if [ "${{ github.event.inputs.docker_tag }}" = "NIGHTLY" ]; then
+          if [ "$DOCKER_TAG" = "NIGHTLY" ]; then
             echo "|=> Docker tag : NIGHTLY."
             echo "BUILD_TAG=duplitrace/duplitrace_gtest:NIGHTLY" >> "$GITHUB_ENV"            
           else
