@@ -2,7 +2,7 @@ name: Build | Google Test Docker Image
 on:
   workflow_dispatch:
     inputs:
-      push_to_registry:
+      PUSH_TO_REGISTRY:
         type: boolean
         description: Push to Registry
         required: true
@@ -18,9 +18,9 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
 
-      - name: Set push_to_registry for Scheduled Run
+      - name: Set PUSH_TO_REGISTRY for Scheduled Run
         if: github.event_name == 'schedule'
-        run: echo "push_to_registry=true" >> $GITHUB_ENV
+        run: echo "PUSH_TO_REGISTRY=true" >> $GITHUB_ENV
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -46,3 +46,15 @@ jobs:
             echo "|=> Docker tag : ${{ inputs.DOCKER_TAG }}"
             echo "BUILD_TAG=duplitrace/duplitrace_gtest:${{ inputs.docker_tag }}" >> "$GITHUB_ENV"
           fi
+
+      - name: Build and push Docker Image
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: docker/Dockerfile.googleTest
+          push: ${{ inputs.PUSH_TO_REGISTRY }}
+          no-cache: true
+          tags: ${{ env.BUILD_TAG }}
+          platforms: |
+              linux/arm64
+              linux/amd64
