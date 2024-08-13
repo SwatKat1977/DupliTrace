@@ -46,7 +46,7 @@ jobs:
 
       - name: Determine current branch
         run: |
-          if [ "${{ inputs.USE_BRANCH_AS_DOCKER_TAG" == 'true' && $GITHUB_REF != 'refs/heads/main' ]; then
+          if [ "${{ inputs.USE_BRANCH_AS_DOCKER_TAG }}" == 'true' && $GITHUB_REF != 'refs/heads/main' ]; then
             echo "BUILD_TAG=swatkat1977/duplitrace_gtest:${GITHUB_REF##*/}" >> "$GITHUB_ENV"
               echo "|=> Docker tag : ${GITHUB_REF##*/}"
             else  
