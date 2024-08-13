@@ -1,5 +1,8 @@
 name: Build | Google Test Docker Image
 on:
+  schedule:
+    - cron: '0 1 * * *'
+
   workflow_dispatch:
     inputs:
       PUSH_TO_REGISTRY:

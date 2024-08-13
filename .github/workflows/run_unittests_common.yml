@@ -1,0 +1,12 @@
+name: Unit Tests | Common
+on:
+  schedule:
+    - cron: '0 1 * * *'
+
+jobs:
+  build-images:
+    runs-on: ubuntu-24.04
+    steps:
+
+      - name: Checkout code
+        uses: actions/checkout@v4
