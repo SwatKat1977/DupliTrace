@@ -46,22 +46,26 @@ jobs:
 
       - name: Determine current branch
         run: |
-          if [ "${{ inputs.DOCKER_TAG }}" = "NIGHTLY" ]; then
-            echo "|=> Docker tag : NIGHTLY."
-            echo "BUILD_TAG=swatkat1977/duplitrace_gtest:NIGHTLY" >> "$GITHUB_ENV"
-          else
-            echo "|=> Docker tag : ${{ inputs.DOCKER_TAG }}"
-            echo "BUILD_TAG=swatkat1977/duplitrace_gtest:${{ inputs.docker_tag }}" >> "$GITHUB_ENV"
+          if [ "${{ github.event.inputs.run_check" == 'true' && $GITHUB_REF != 'refs/heads/main' ]; then
+            echo "BUILD_TAG=swatkat1977/duplitrace_gtest:${GITHUB_REF##*/}" >> "$GITHUB_ENV"
+          else  
+            if [ "${{ inputs.DOCKER_TAG }}" = "NIGHTLY" ]; then
+              echo "|=> Docker tag : NIGHTLY."
+              echo "BUILD_TAG=swatkat1977/duplitrace_gtest:NIGHTLY" >> "$GITHUB_ENV"
+            else
+              echo "|=> Docker tag : ${{ inputs.DOCKER_TAG }}"
+              echo "BUILD_TAG=swatkat1977/duplitrace_gtest:${{ inputs.docker_tag }}" >> "$GITHUB_ENV"
+            fi
           fi
 
-      - name: Build and push Docker Image
-        uses: docker/build-push-action@v3
-        with:
-          context: .
-          file: docker/Dockerfile.googleTest
-          push: ${{ inputs.PUSH_TO_REGISTRY }}
-          no-cache: true
-          tags: ${{ env.BUILD_TAG }}
-          platforms: |
-              linux/arm64
-              linux/amd64
+      #- name: Build and push Docker Image
+      #  uses: docker/build-push-action@v3
+      #  with:
+      #    context: .
+      #    file: docker/Dockerfile.googleTest
+      #    push: ${{ inputs.PUSH_TO_REGISTRY }}
+      #    no-cache: true
+      #    tags: ${{ env.BUILD_TAG }}
+      #    platforms: |
+      #        linux/arm64
+      #        linux/amd64
