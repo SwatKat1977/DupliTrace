@@ -46,9 +46,6 @@ jobs:
 
       - name: Determine current branch
         run: |
-          echo "USE_BRANCH_AS_DOCKER_TAG : ${{ inputs.USE_BRANCH_AS_DOCKER_TAG }}"
-          echo "GITHUB_REF               : $GITHUB_REF"
-
           if [[ "${{ inputs.USE_BRANCH_AS_DOCKER_TAG }}" == 'true' && $GITHUB_REF != 'refs/heads/main' ]]; then
               echo "BUILD_TAG=swatkat1977/duplitrace_gtest:${GITHUB_REF##*/}" >> "$GITHUB_ENV"
               echo "|=> Docker tag : ${GITHUB_REF##*/}"
@@ -62,14 +59,14 @@ jobs:
             fi
           fi
 
-      #- name: Build and push Docker Image
-      #  uses: docker/build-push-action@v3
-      #  with:
-      #    context: .
-      #    file: docker/Dockerfile.googleTest
-      #    push: ${{ inputs.PUSH_TO_REGISTRY }}
-      #    no-cache: true
-      #    tags: ${{ env.BUILD_TAG }}
-      #    platforms: |
-      #        linux/arm64
-      #        linux/amd64
+      - name: Build and push Docker Image
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: docker/Dockerfile.googleTest
+          push: ${{ inputs.PUSH_TO_REGISTRY }}
+          no-cache: true
+          tags: ${{ env.BUILD_TAG }}
+          platforms: |
+              linux/arm64
+              linux/amd64
