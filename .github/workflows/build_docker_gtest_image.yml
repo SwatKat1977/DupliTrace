@@ -41,10 +41,10 @@ jobs:
         run: |
           if [ "${{ inputs.DOCKER_TAG }}" = "NIGHTLY" ]; then
             echo "|=> Docker tag : NIGHTLY."
-            echo "BUILD_TAG=duplitrace/duplitrace_gtest:NIGHTLY" >> "$GITHUB_ENV"            
+            echo "BUILD_TAG=swatkat1977/duplitrace_gtest:NIGHTLY" >> "$GITHUB_ENV"
           else
             echo "|=> Docker tag : ${{ inputs.DOCKER_TAG }}"
-            echo "BUILD_TAG=duplitrace/duplitrace_gtest:${{ inputs.docker_tag }}" >> "$GITHUB_ENV"
+            echo "BUILD_TAG=swatkat1977/duplitrace_gtest:${{ inputs.docker_tag }}" >> "$GITHUB_ENV"
           fi
 
       - name: Build and push Docker Image
