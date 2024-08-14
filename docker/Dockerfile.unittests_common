@@ -27,5 +27,4 @@ RUN make clean ; make
 CMD ./unittests_common ; \
     lcov --capture --directory ../common --output-file coverage.info ; \
     genhtml coverage.info --output-directory coverage-report ;         \
-    weasyprint coverage-report/index.html coverage-report.pdf ; ls -al .
-    #for file in ../common/*.cpp; do gcov "$file"; done  ; \
+    weasyprint coverage-report/index.html coverage-report.pdf
