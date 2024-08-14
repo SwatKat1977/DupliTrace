@@ -3,10 +3,13 @@ on:
   schedule:
     - cron: '0 1 * * *'
 
-  push:
-    # Set branch to be invalid on purpose!
-    branches:
-      - 'invalid'
+  workflow_dispatch:
+    inputs:
+      CUR_TIMESTAMP:
+        description: Timestamp for the build
+        required: true
+        # Leave empty; we'll set it programmatically if not provided
+        default: ''
 
 jobs:
   build-images:
