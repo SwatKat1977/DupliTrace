@@ -19,6 +19,21 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Set Timestamp
+        id: set-timestamp
+        run: |
+          if [ "${{ github.event.inputs.timestamp }}" == "" ]; then
+            echo "timestamp=$(date +%Y-%m-%dT%H:%M:%SZ)" >> $GITHUB_ENV
+          else
+            echo "timestamp=${{ github.event.inputs.timestamp }}" >> $GITHUB_ENV
+        env:
+          TIMESTAMP: ${{ github.event.inputs.timestamp }}
+
+      - name: Debug action
+        run: |
+          echo "timestamp : $timestamp"
+          exit 1
+
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
 
