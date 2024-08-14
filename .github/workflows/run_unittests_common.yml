@@ -3,6 +3,13 @@ on:
   schedule:
     - cron: '0 1 * * *'
 
+  workflow_dispatch:
+    inputs:
+      CUR_TIMESTAMP:
+        description: 'Timestamp for the build'
+        required: false
+        default: ''  # Leave empty; we'll set it programmatically if not provided
+  
 jobs:
   build-images:
     runs-on: ubuntu-24.04
