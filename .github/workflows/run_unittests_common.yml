@@ -3,6 +3,11 @@ on:
   schedule:
     - cron: '0 1 * * *'
 
+  push:
+    # Set branch to be invalid on purpose!
+    branches:
+      - 'invalid'
+
   workflow_dispatch:
     inputs:
       CUR_TIMESTAMP:
