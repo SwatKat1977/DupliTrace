@@ -26,6 +26,7 @@ jobs:
             echo "timestamp=$(date +%Y-%m-%dT%H:%M:%SZ)" >> $GITHUB_ENV
           else
             echo "timestamp=${{ github.event.inputs.timestamp }}" >> $GITHUB_ENV
+          fi
         env:
           TIMESTAMP: ${{ github.event.inputs.timestamp }}
 
