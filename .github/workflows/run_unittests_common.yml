@@ -7,7 +7,7 @@ on:
     inputs:
       CUR_TIMESTAMP:
         description: Timestamp for the build
-        required: true
+        required: false
         # Leave empty; we'll set it programmatically if not provided
         default: ''
 
