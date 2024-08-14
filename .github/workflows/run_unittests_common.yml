@@ -11,10 +11,11 @@ on:
   workflow_dispatch:
     inputs:
       CUR_TIMESTAMP:
-        description: 'Timestamp for the build'
+        description: Timestamp for the build
         required: true
-        default: ''  # Leave empty; we'll set it programmatically if not provided
-  
+        # Leave empty; we'll set it programmatically if not provided
+        default: ''
+
 jobs:
   build-images:
     runs-on: ubuntu-24.04
