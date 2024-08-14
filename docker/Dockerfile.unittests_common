@@ -1,0 +1,30 @@
+from  swatkat1977/duplitrace_gtest:NIGHTLY
+
+ARG duplitrace_dir=/duplitrace/
+ENV DUPLITRACE_DIR=$duplitrace_dir
+ENV DUPLITRACE_OUTDIR=.
+ENV GOOGLETEST_INCLUDE=/usr/local/include/
+ENV GOOGLETEST_LIB=/usr/local/lib/
+
+RUN groupadd --system duplitrace && \
+    useradd --system duplitrace --gid duplitrace && \
+	mkdir -p ${DUPLITRACE_DIR} && \
+	chown -R duplitrace:duplitrace ${DUPLITRACE_DIR}
+
+RUN export DEBIAN_FRONTEND=noninteractive && \
+    apt update && \
+    apt-get install --yes lcov && \
+    apt-get install --yes weasyprint
+
+COPY --chown=duplitrace:duplitrace src/3rd_party ${DUPLITRACE_DIR}3rd_party
+COPY --chown=duplitrace:duplitrace src/common ${DUPLITRACE_DIR}common
+COPY --chown=duplitrace:duplitrace src/common_unittests ${DUPLITRACE_DIR}common_unittests
+
+WORKDIR ${DUPLITRACE_DIR}common_unittests
+
+RUN make clean ; make
+
+CMD ./unittests_common ; \
+    lcov --capture --directory ../common --output-file coverage.info ; \
+    genhtml coverage.info --output-directory coverage-report ;         \
+    weasyprint coverage-report/index.html coverage-report.pdf

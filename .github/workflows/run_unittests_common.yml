@@ -3,6 +3,19 @@ on:
   schedule:
     - cron: '0 1 * * *'
 
+  push:
+    # Set branch to be invalid on purpose!
+    branches:
+      - 'invalid'
+
+  workflow_dispatch:
+    inputs:
+      CUR_TIMESTAMP:
+        description: Timestamp for the build
+        required: true
+        # Leave empty; we'll set it programmatically if not provided
+        default: ''
+
 jobs:
   build-images:
     runs-on: ubuntu-24.04
@@ -10,3 +23,17 @@ jobs:
 
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build Docker image
+        run: |
+          docker buildx build -f docker/Dockerfile.unittests_common -t unittests_common:latest .
+
+      - name: Run Docker container
+        run: |
+          docker run --rm unittests_common:latest
