@@ -31,11 +31,6 @@ jobs:
         env:
           TIMESTAMP: ${{ github.event.inputs.timestamp }}
 
-      - name: Debug action
-        run: |
-          echo "timestamp : $timestamp"
-          exit 1
-
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
 
