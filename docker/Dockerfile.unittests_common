@@ -14,6 +14,7 @@ RUN groupadd --system duplitrace && \
 RUN export DEBIAN_FRONTEND=noninteractive && \
     apt update && \
     apt-get install --yes lcov && \
+    apt-get install --yes gcovr && \
     apt-get install --yes weasyprint
 
 COPY --chown=duplitrace:duplitrace src/3rd_party ${DUPLITRACE_DIR}3rd_party
@@ -28,5 +29,6 @@ CMD ./unittests_common ; \
     lcov --capture --directory ../common --output-file coverage.info ; \
     lcov --remove coverage.info '/usr/include/*' --output-file coverage.filtered.info      ; \
     lcov --list coverage.filtered.info > coverage_summary.txt                              ; \
-    genhtml --highlight --legend coverage.filtered.info --output-directory coverage-report ; \
+    gcovr -r . --html --html-details -o coverage_report/index.html                         ; \
+    #genhtml --highlight --legend coverage.filtered.info --output-directory coverage-report ; \
     weasyprint coverage-report/index.html coverage-report.pdf
