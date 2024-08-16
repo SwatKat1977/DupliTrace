@@ -41,7 +41,9 @@ jobs:
           docker buildx build --load -f docker/Dockerfile.unittests_common -t unittests_common:latest .
 
       - name: Debug: List Docker images
-        run: docker images
+        run: |
+          docker images
 
       - name: Run Docker container
-        run: docker run --name unittests_common -d unittests_common:latest
+        run: |
+          docker run --name unittests_common -d unittests_common:latest
