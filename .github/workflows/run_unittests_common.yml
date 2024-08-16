@@ -51,9 +51,16 @@ jobs:
       - name: Copy covergage pdf from QEMU instance
         run: |
           docker cp unittests_common:/duplitrace/common_unittests/coverage-report.pdf ./common_unittests_coverage.pdf
+          docker cp unittests_common:/duplitrace/common_unittests/coverage_summary.txt ./common_unittests_coverage_summary.txt
 
       - name: Upload wobble.pdf as artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: common_unittests_coverage.pdf
           path: common_unittests_coverage.pdf
+
+      - name: Upload wobble.pdf as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: common_unittests_coverage_summary.txt
+          path: common_unittests_coverage_summary.txt
