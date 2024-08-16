@@ -31,5 +31,6 @@ CMD ./unittests_common ; \
     lcov --list coverage.filtered.info > coverage_summary.txt                              ; \ 
     mkdir -p coverage_report                                                               ; \
     gcovr -r . --html --html-details -o coverage_report/index.html                         ; \
+    ls -al coverage-report ; ls -al . ; \
     #genhtml --highlight --legend coverage.filtered.info --output-directory coverage-report ; \
     weasyprint coverage-report/index.html coverage-report.pdf
