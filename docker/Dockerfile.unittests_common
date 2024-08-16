@@ -25,6 +25,6 @@ WORKDIR ${DUPLITRACE_DIR}common_unittests
 RUN make clean ; make
 
 CMD ./unittests_common ; \
-    lcov --capture --directory ../common --output-file coverage.info ;      \
-    genhtml coverage.info --output-directory coverage-report ; pwd ; ls -al \
+    lcov --capture --directory ../common --output-file coverage.info ; \
+    genhtml coverage.info --output-directory coverage-report ;         \
     weasyprint coverage-report/index.html coverage-report.pdf

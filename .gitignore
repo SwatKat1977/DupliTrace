@@ -2,3 +2,10 @@
 .vs
 *.user
 X64
+
+# Linux/Mac Intermediate Files
+*.o
+src/bins/
+
+# GCC Coverage Intermediate Files
+*.gcno

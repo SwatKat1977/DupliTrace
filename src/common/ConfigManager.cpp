@@ -177,7 +177,6 @@ int* ConfigManager::ReadInt(std::string section, ConfigSetupItem fmt) {
     std::string envVariable = section + "_" + fmt.ItemName();
     std::transform(envVariable.begin(), envVariable.end(), envVariable.begin(),
                    ::toupper);
-
     std::string envValue = GetEnv(envVariable.c_str());
 
     if (!envValue.empty()) {
@@ -225,7 +224,7 @@ int* ConfigManager::ReadInt(std::string section, ConfigSetupItem fmt) {
                 section + "::" + fmt.ItemName();
             throw std::invalid_argument(except);
         } else if (!fmt.IsUnset()) {
-            intValue = new int(fmt.DefaultIntValue ());
+            intValue = new int(fmt.DefaultIntValue());
         }
     }
 
