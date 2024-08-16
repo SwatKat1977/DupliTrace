@@ -46,4 +46,4 @@ jobs:
 
       - name: Run Docker container
         run: |
-          docker run --name unittests_common -d unittests_common:latest
+          docker run --name unittests_common unittests_common:latest
