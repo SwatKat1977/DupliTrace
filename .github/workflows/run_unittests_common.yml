@@ -38,8 +38,13 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker buildx build -f docker/Dockerfile.unittests_common -t unittests_common:latest .
-          docker run --name unittests_common -d unittests_common:latest
+          docker buildx build --load -f docker/Dockerfile.unittests_common -t unittests_common:latest .
+
+      - name: Debug: List Docker images
+        run: docker images
+
+      - name: Run Docker container
+        run: docker run --name unittests_common -d unittests_common:latest
 
       #- name: Run Docker container
       #  run: |
