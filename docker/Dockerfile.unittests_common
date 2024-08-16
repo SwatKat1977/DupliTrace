@@ -27,5 +27,5 @@ RUN make clean ; make
 CMD ./unittests_common ; \
     lcov --capture --directory ../common --output-file coverage.info ; \
     lcov --remove coverage.info '/usr/include/*' --output-file coverage.filtered.info ; \
-    genhtml coverage.filtered.info --output-directory coverage-report ;         \
+    genhtml --highlight --legend coverage.filtered.info --output-directory coverage-report ;         \
     weasyprint coverage-report/index.html coverage-report.pdf
