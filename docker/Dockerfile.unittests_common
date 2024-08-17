@@ -26,11 +26,18 @@ WORKDIR ${DUPLITRACE_DIR}common_unittests
 RUN make clean ; make
 
 CMD ./unittests_common ; \
+    # Step 1: Capture coverage data
     lcov --capture --directory ../common --output-file coverage.info ; \
-    lcov --remove coverage.info '/usr/include/*' --output-file coverage.filtered.info      ; \
-    lcov --list coverage.filtered.info > coverage_summary.txt                              ; \ 
-    mkdir -p coverage_report                                                               ; \
-    gcovr -r . --html --html-details -o coverage_report/index.html                         ; \
+    # Step 2: Remove irrelevant coverage data (like system includes)
+    lcov --remove coverage.info '/usr/include/*' --output-file coverage.filtered.info ; \
+    # Step 3: Generate a text summary of the coverage
+    lcov --list coverage.filtered.info > coverage_summary.txt ; \
+    # Step 4: Create the coverage report directory
+    mkdir -p coverage_report ; \
+    #gcovr -r . --html --html-details -o coverage_report/index.html ; \
+    # Step 5: Generate a detailed HTML report with gcovr, showing untested lines
+    gcovr -r . --html --html-details --output coverage_report/index.html --exclude-unreachable-branches --exclude-throw-branches ; \
+
     ls -al coverage_report ; ls -al . ; \
-    #genhtml --highlight --legend coverage.filtered.info --output-directory coverage-report ; \
+    # Step 7: Convert the HTML report to PDF using weasyprint
     weasyprint coverage_report/index.html coverage_report.pdf
