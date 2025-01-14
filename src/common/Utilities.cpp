@@ -53,8 +53,7 @@ std::string ToUpper(std::string str) {
 }
 
 std::tm* StdTimeToStdTm (std::time_t const* date, std::tm* const out) {
-#if (DUPLITRACE_PLATFORM == DUPLITRACE_PLATFORM_WINDOWS || \
-     DUPLITRACE_PLATFORM == DUPLITRACE_PLATFORM_WINDOWS_MSVC)
+#if (DUPLITRACE_PLATFORM == DUPLITRACE_PLATFORM_WINDOWS)
     errno_t err = localtime_s (out, date);
     return 0 == err ? out : nullptr;
 #else

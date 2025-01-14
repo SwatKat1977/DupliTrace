@@ -23,15 +23,10 @@ Copyright 2024 DupliTrace Development Team
 #include <string>
 
 #define DUPLITRACE_PLATFORM_WINDOWS      1
-#define DUPLITRACE_PLATFORM_WINDOWS_MSVC 2
-#define DUPLITRACE_PLATFORM_LINUX        3
+#define DUPLITRACE_PLATFORM_LINUX        2
 
 #if (defined( __WIN32__ ) || defined( _WIN32 )) && !defined(__ANDROID__)
-#  if defined(_MSC_VER)
-#    define DUPLITRACE_PLATFORM DUPLITRACE_PLATFORM_WINDOWS_MSVC
-#  else
-#    define DUPLITRACE_PLATFORM DUPLITRACE_PLATFORM_WINDOWS_CORE
-#  endif
+#    define DUPLITRACE_PLATFORM DUPLITRACE_PLATFORM_WINDOWS
 #else
 #    define DUPLITRACE_PLATFORM DUPLITRACE_PLATFORM_LINUX
 #endif

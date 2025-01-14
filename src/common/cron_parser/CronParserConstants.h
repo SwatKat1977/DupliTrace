@@ -23,7 +23,7 @@ Copyright 2024 DupliTrace Development Team
 #include <vector>
 #include "Platform.h"
 
-#if (DUPLITRACE_PLATFORM == DUPLITRACE_PLATFORM_WINDOWS_MSVC)
+#if (DUPLITRACE_PLATFORM == DUPLITRACE_PLATFORM_WINDOWS)
   #if defined(_MSVC_LANG) && _MSVC_LANG == 201703L
 #else
   #if __cplusplus < 201703L
