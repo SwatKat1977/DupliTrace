@@ -20,8 +20,8 @@ Copyright 2024 DupliTrace Development Team
     Code is based on croncpp by Mariusbancila:
         https://github.com/mariusbancila/croncpp
 */
-#ifndef CRONPARSER_H_
-#define CRONPARSER_H_
+#ifndef CRON_PARSER_CRONPARSER_H_
+#define CRON_PARSER_CRONPARSER_H_
 #include <bitset>
 #include <stdexcept>
 #include <string>
@@ -31,7 +31,7 @@ Copyright 2024 DupliTrace Development Team
 #include "Utilities.h"
 #include "CronParserConstants.h"
 
-#if (DUPLITRACE_PLATFORM == DUPLITRACE_PLATFORM_WINDOWS_MSVC)
+#if (DUPLITRACE_PLATFORM == DUPLITRACE_PLATFORM_WINDOWS)
   #if defined(_MSVC_LANG) && _MSVC_LANG == 201703L
 #else
   #if __cplusplus < 201703L
@@ -106,4 +106,4 @@ class CronExpression {
 }  // namespace cronparser
 }  // namespace duplitrace
 
-#endif  // CRONPARSER_H_
+#endif  // CRON_PARSER_CRONPARSER_H_

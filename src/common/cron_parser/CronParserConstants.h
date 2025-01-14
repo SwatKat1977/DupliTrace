@@ -17,13 +17,13 @@ Copyright 2024 DupliTrace Development Team
     You should have received a copy of the GNU General Public License
     along with this program.If not, see < https://www.gnu.org/licenses/>.
 */
-#ifndef CRONPARSERCONSTANTS_H_
-#define CRONPARSERCONSTANTS_H_
+#ifndef CRON_PARSER_CRONPARSERCONSTANTS_H_
+#define CRON_PARSER_CRONPARSERCONSTANTS_H_
 #include <string>
 #include <vector>
 #include "Platform.h"
 
-#if (DUPLITRACE_PLATFORM == DUPLITRACE_PLATFORM_WINDOWS_MSVC)
+#if (DUPLITRACE_PLATFORM == DUPLITRACE_PLATFORM_WINDOWS)
   #if defined(_MSVC_LANG) && _MSVC_LANG == 201703L
 #else
   #if __cplusplus < 201703L
@@ -142,4 +142,4 @@ const std::vector<std::string> MONTH = {
 }  // namespace cronparser
 }  // namespace duplitrace
 
-#endif  // CRONPARSERCONSTANTS_H_
+#endif  // CRON_PARSER_CRONPARSERCONSTANTS_H_

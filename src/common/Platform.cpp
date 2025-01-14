@@ -19,15 +19,14 @@ Copyright 2024 DupliTrace Development Team
 */
 #include "Platform.h"
 
-std::string GetEnv (const char* field)
-{
-#if (DUPLITRACE_PLATFORM == DUPLITRACE_PLATFORM_WINDOWS_MSVC)
+std::string GetEnv(const char* field) {
+#if (DUPLITRACE_PLATFORM == DUPLITRACE_PLATFORM_WINDOWS)
     size_t len = 0;
     char buf[128];
-    bool ok = ::getenv_s (&len, buf, sizeof (buf), field) == 0;
+    bool ok = ::getenv_s(&len, buf, sizeof(buf), field) == 0;
     return ok ? buf : nullptr;
-#else // revert to getenv
-    char* buf = ::getenv (field);
+#else //    revert to getenv
+    char* buf = ::getenv(field);
     return buf ? buf : std::string{};
 #endif
 }

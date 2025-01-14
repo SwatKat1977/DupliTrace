@@ -25,22 +25,17 @@ Copyright 2024 DupliTrace Development Team
 
 namespace duplitrace {
 
-const char LOGGING_SECTION[] = "logging";
+const char BOOL_YES[] = "YES";
+const char BOOL_NO[] = "NO";
 
+const char LOGGING_SECTION[] = "logging";
 const char LOGGING_LOG_LEVEL[] = "log_level";
 const char LOGGING_LOG_LEVEL_DEBUG[] = "DEBUG";
-const char LOGGING_LOG_LEVEL_INfO[] = "INFO";
-
+const char LOGGING_LOG_LEVEL_INFO[] = "INFO";
 const char LOGGING_LOG_TO_CONSOLE[] = "log_to_console";
-const char LOGGING_LOG_TO_CONSOLE_YES[] = "YES";
-const char LOGGING_LOG_TO_CONSOLE_NO[] = "NO";
-
 const char LOGGING_LOG_FILENAME[] = "log_filename";
-
 const char LOGGING_MAX_FILE_SIZE[] = "max_file_size";
-
 const char LOGGING_MAX_FILE_COUNT[] = "max_file_count";
-
 const char LOGGING_LOG_FORMAT[] = "log_format";
 const char LOGGING_LOG_FORMAT_DEFAULT[] = "%Y-%m-%d %H:%M:%S %^%l%$ [%n] %v";
 const int LOGGING_MAX_FILE_SIZE_DEFAULT = 1024;
@@ -51,17 +46,17 @@ const common::SectionList LoggerSettings = {
         LOGGING_LOG_LEVEL,
         common::ConfigSetupItem(LOGGING_LOG_LEVEL,
                                 common::CONFIG_ITEM_TYPE_STRING)
-                .DefaultValue(LOGGING_LOG_LEVEL_INfO)
+                .DefaultValue(LOGGING_LOG_LEVEL_INFO)
                 .ValidValues(common::StringList{ LOGGING_LOG_LEVEL_DEBUG,
-                                                 LOGGING_LOG_LEVEL_INfO })
+                                                 LOGGING_LOG_LEVEL_INFO })
     },
     {
         LOGGING_LOG_TO_CONSOLE,
         common::ConfigSetupItem(LOGGING_LOG_TO_CONSOLE,
                                 common::CONFIG_ITEM_TYPE_STRING)
-                .DefaultValue(LOGGING_LOG_TO_CONSOLE_NO)
-                .ValidValues(common::StringList{ LOGGING_LOG_TO_CONSOLE_YES,
-                                                 LOGGING_LOG_TO_CONSOLE_NO })
+                .DefaultValue(BOOL_NO)
+                .ValidValues(common::StringList{ BOOL_YES,
+                                                 BOOL_NO })
     },
     {
         LOGGING_LOG_FILENAME,

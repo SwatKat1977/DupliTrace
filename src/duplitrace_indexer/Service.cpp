@@ -130,7 +130,7 @@ bool Service::InitialiseLogger() {
 
     std::vector<spdlog::sink_ptr> sinks;
 
-    if (GET_LOGGING_LOG_TO_CONSOLE == LOGGING_LOG_TO_CONSOLE_YES) {
+    if (GET_LOGGING_LOG_TO_CONSOLE == BOOL_YES) {
         auto stdout_sink = \
             std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
         sinks.push_back(stdout_sink);

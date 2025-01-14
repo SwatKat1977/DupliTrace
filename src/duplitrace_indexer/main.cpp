@@ -23,7 +23,7 @@ Copyright 2024 DupliTrace Development Team
 #include "argparse/argparse.hpp"
 #include "ConfigurationLayout.h"
 #include "Service.h"
-#include "../cron_parser/CronParser.h"
+#include "cron_parser/CronParser.h"
 
 const char DEFAULT_CONFIG_FILE[] = "./config.cfg";
 
