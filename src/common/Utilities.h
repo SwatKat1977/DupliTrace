@@ -20,6 +20,7 @@ Copyright 2024 DupliTrace Development Team
 #ifndef UTILITIES_H_
 #define UTILITIES_H_
 #include <ctime>
+#include <string>
 #include <vector>
 
 namespace duplitrace { namespace common {

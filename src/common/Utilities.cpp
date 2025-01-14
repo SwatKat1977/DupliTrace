@@ -34,17 +34,17 @@ std::vector<std::string> StringSplit(std::string_view text,
                                      char const delimiter) {
     std::vector<std::string> tokens;
     std::string token;
-    std::istringstream tokenStream (text.data());
+    std::istringstream tokenStream(text.data());
 
-    while (std::getline (tokenStream, token, delimiter)) {
-        tokens.push_back (token);
+    while (std::getline(tokenStream, token, delimiter)) {
+        tokens.push_back(token);
     }
 
     return tokens;
 }
 
 std::string ToUpper(std::string str) {
-    std::transform (std::begin(str), std::end(str),
+    std::transform(std::begin(str), std::end(str),
         std::begin(str), [](char const c) {
             return static_cast<char>(std::toupper (c));
         });
@@ -52,9 +52,9 @@ std::string ToUpper(std::string str) {
     return str;
 }
 
-std::tm* StdTimeToStdTm (std::time_t const* date, std::tm* const out) {
+std::tm* StdTimeToStdTm(std::time_t const* date, std::tm* const out) {
 #if (DUPLITRACE_PLATFORM == DUPLITRACE_PLATFORM_WINDOWS)
-    errno_t err = localtime_s (out, date);
+    errno_t err = localtime_s(out, date);
     return 0 == err ? out : nullptr;
 #else
     return localtime_r (date, out);
@@ -62,7 +62,7 @@ std::tm* StdTimeToStdTm (std::time_t const* date, std::tm* const out) {
 }
 
 inline std::time_t StdTmToStdTime(std::tm& date) {
-    return std::mktime (&date);
+    return std::mktime(&date);
 }
 
 }   // namespace common

@@ -33,6 +33,6 @@ Copyright 2024 DupliTrace Development Team
 
 #define ItemsAssert(expr, mesg) assert((expr) && (mesg))
 
-std::string GetEnv (const char* field);
+std::string GetEnv(const char* field);
 
 #endif  // PLATFORM_H_
