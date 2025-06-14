@@ -9,3 +9,11 @@ src/bins/
 
 # GCC Coverage Intermediate Files
 *.gcno
+
+# Autoamke Intermediate Files
+aclocal.m4
+autom4te.cache/
+config.h.in
+configure
+install-sh
+missing
