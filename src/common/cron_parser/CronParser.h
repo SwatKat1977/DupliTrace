@@ -69,7 +69,7 @@ class CronExpression {
      BitsetDaysOfMonth DaysOfMonth() const { return days_of_month_;  }
      BitsetMonths Months() const { return months_; }
 
-     bool operator==(const CronExpression &right);
+     bool operator==(const CronExpression &right) const;
      bool operator!=(const CronExpression &right);
 
      std::tm getNextTriggerTime(const std::tm& start_time);
@@ -85,10 +85,10 @@ class CronExpression {
 
      cronparser_int ToCronParserInt(std::string_view text);
 
-     std::pair<cronparser_int, cronparser_int> CreateIntRange(
-         std::string_view field,
-         cronparser_int const minval,
-         cronparser_int const maxval);
+    void CreateIntRange(std::string_view field,
+                        cronparser_int minval,
+                        cronparser_int maxval,
+                        std::bitset<64>& target);
 
      template <size_t SIZE>
      void SetCronField(std::string_view value, std::bitset<SIZE>& target,

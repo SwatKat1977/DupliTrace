@@ -28,6 +28,27 @@ const char SPECIAL_CHARACTER_ASTERISK = '*';
 const char SPECIAL_CHARACTER_COMMA = ',';
 const char SPECIAL_CHARACTER_HYPHEN = '-';
 
+const int MAX_YEARS_AHEAD = 5;
+
+template <size_t N>
+int findNextSetBit(const std::bitset<N>& bits, int start, int max) {
+    for (int i = start + 1; i < max; ++i) {
+        if (bits.test(i)) return i;
+    }
+    for (int i = 0; i <= start; ++i) {
+        if (bits.test(i)) return i;
+    }
+    return 0; // fallback
+}
+
+template <size_t N>
+int getLowestSetBit(const std::bitset<N>& bits) {
+    for (int i = 0; i < static_cast<int>(bits.size()); ++i) {
+        if (bits.test(i)) return i;
+    }
+    return 0;
+}
+
 CronExpression::CronExpression(std::string_view expression) {
     if (expression.empty())
         throw BadCronExpression("Invalid empty cron expression");
@@ -55,7 +76,7 @@ CronExpression::CronExpression(std::string_view expression) {
     expression_string_ = expression;
 }
 
-bool CronExpression::operator==(const CronExpression &right) {
+bool CronExpression::operator==(const CronExpression &right) const {
     return
         seconds_ == right.seconds_ &&
         minutes_ == right.minutes_ &&
@@ -70,87 +91,79 @@ bool CronExpression::operator!=(const CronExpression &right) {
 }
 
 std::tm CronExpression::getNextTriggerTime(const std::tm& start_time) {
-    std::tm next_time = start_time;
+    std::tm candidate = start_time;
+    candidate.tm_sec += 1;
 
-    // Start checking from the next second
-    next_time.tm_sec += 1;
+    const int MAX_YEARS_AHEAD = 5;
+    const int start_year = candidate.tm_year;
 
     while (true) {
-        // If seconds exceed the maximum allowed value
-        // (CRONPARSER_BITFIELD_VALUE_SECONDS), reset to 0 and increment
-        // minutes.
-        if (next_time.tm_sec >= CRONPARSER_BITFIELD_VALUE_SECONDS) {
-            next_time.tm_sec = 0;
-            next_time.tm_min += 1;
+        std::mktime(&candidate);  // Normalize time
+
+        if (candidate.tm_year > start_year + MAX_YEARS_AHEAD) {
+            throw BadCronExpression("No cron match found within 5 years");
         }
 
-        // If minutes exceed the maximum allowed value
-        // (CRONPARSER_BITFIELD_VALUE_MINUTES), reset to 0 and increment hours.
-        if (next_time.tm_min >= CRONPARSER_BITFIELD_VALUE_MINUTES) {
-            next_time.tm_min = 0;
-            next_time.tm_hour += 1;
+        // Try to jump to next valid second
+        if (!seconds_.test(candidate.tm_sec)) {
+            int next_sec = findNextSetBit(seconds_, candidate.tm_sec, 60);
+            if (next_sec <= candidate.tm_sec) {
+                candidate.tm_min += 1;
+            }
+            candidate.tm_sec = next_sec;
+            continue;
         }
 
-        // If hours exceed the maximum allowed value
-        // (CRONPARSER_BITFIELD_VALUE_HOURS), reset to 0 and increment the day
-        // of the month.
-        if (next_time.tm_hour >= CRONPARSER_BITFIELD_VALUE_HOURS) {
-            next_time.tm_hour = 0;
-            next_time.tm_mday += 1;
+        // Try to jump to next valid minute
+        if (!minutes_.test(candidate.tm_min)) {
+            int next_min = findNextSetBit(minutes_, candidate.tm_min, 60);
+            if (next_min <= candidate.tm_min) {
+                candidate.tm_hour += 1;
+            }
+            candidate.tm_min = next_min;
+            candidate.tm_sec = getLowestSetBit(seconds_);
+            continue;
         }
 
-        // Handle non-existent dates (e.g., April 31) and leap years (e.g.,
-        // February 30).
-        if (next_time.tm_mday > CRONPARSER_BITFIELD_VALUE_DAYS_OF_MONTH ||
-            (next_time.tm_mon == 1 && next_time.tm_mday == 30 &&
-            !((next_time.tm_year + 1900) % 4 == 0 &&
-            ((next_time.tm_year + 1900) % 100 != 0 ||
-            (next_time.tm_year + 1900) % 400 == 0)))) {
-            next_time.tm_mday = 1;
-            next_time.tm_mon += 1;
+        // Try to jump to next valid hour
+        if (!hours_.test(candidate.tm_hour)) {
+            int next_hour = findNextSetBit(hours_, candidate.tm_hour, 24);
+            if (next_hour <= candidate.tm_hour) {
+                candidate.tm_mday += 1;
+            }
+            candidate.tm_hour = next_hour;
+            candidate.tm_min = getLowestSetBit(minutes_);
+            candidate.tm_sec = getLowestSetBit(seconds_);
+            continue;
         }
 
-        // If months exceed the maximum allowed value
-        // (CRONPARSER_BITFIELD_VALUE_MONTHS), reset to 0 and increment the
-        // year.
-        if (next_time.tm_mon >= CRONPARSER_BITFIELD_VALUE_MONTHS) {
-            next_time.tm_mon = 0;
-            next_time.tm_year += 1;
+        // Try to jump to next valid month
+        if (!months_.test(candidate.tm_mon)) {
+            int next_month = findNextSetBit(months_, candidate.tm_mon, 12);
+            if (next_month <= candidate.tm_mon) {
+                candidate.tm_year += 1;
+            }
+            candidate.tm_mon = next_month;
+            candidate.tm_mday = 1;
+            candidate.tm_hour = getLowestSetBit(hours_);
+            candidate.tm_min = getLowestSetBit(minutes_);
+            candidate.tm_sec = getLowestSetBit(seconds_);
+            continue;
         }
 
-        // Normalise the time structure after any changes
-        std::mktime(&next_time);
-
-        // Check if the current next_time values match the cron expression
-        // fields (seconds, minutes, hours, days of the month, months, and days
-        // of the week).The.test () method is used to check if the specific
-        // field value is valid according to the cron expression.
-        // * seconds_.test (next_time.tm_sec) : Checks if the current second is
-        //   valid.
-        // * minutes_.test (next_time.tm_min) : Checks if the current minute is
-        //   valid.
-        // * hours_.test (next_time.tm_hour) : Checks if the current hour is
-        //   valid.
-        // * days_of_week_.test (next_time.tm_mday - 1) : Checks if the current
-        //   day of the month is valid (subtracting 1 because tm_mday is
-        //   1 - based).
-        // * months_.test (next_time.tm_mon) : Checks if the current month is
-        //    valid.
-        // * days_of_week_.test (next_time.tm_wday) : Checks if the current day
-        //   of the week is valid.
-        if (seconds_.test(next_time.tm_sec) &&
-            minutes_.test(next_time.tm_min) &&
-            hours_.test(next_time.tm_hour) &&
-            days_of_month_.test(static_cast<size_t>(next_time.tm_mday) -1) &&
-            months_.test(next_time.tm_mon) &&
-            days_of_week_.test(next_time.tm_wday)) {
-            break;
+        // Day-of-month or day-of-week logic
+        bool dom_ok = days_of_month_.test(candidate.tm_mday - 1);
+        bool dow_ok = days_of_week_.test(candidate.tm_wday);
+        if (!(dom_ok || dow_ok)) {
+            candidate.tm_mday += 1;
+            candidate.tm_hour = getLowestSetBit(hours_);
+            candidate.tm_min = getLowestSetBit(minutes_);
+            candidate.tm_sec = getLowestSetBit(seconds_);
+            continue;
         }
 
-        next_time.tm_sec += 1;
+        return candidate;  // All fields match!
     }
-
-    return next_time;
 }
 
 cronparser_int CronExpression::ToCronParserInt(std::string_view text) {
@@ -162,87 +175,75 @@ cronparser_int CronExpression::ToCronParserInt(std::string_view text) {
     }
 }
 
-std::pair<cronparser_int, cronparser_int> CronExpression::CreateIntRange(
-        std::string_view field,
-        cronparser_int const minval,
-        cronparser_int const maxval) {
+void CronExpression::CreateIntRange(std::string_view field,
+                                    cronparser_int minval,
+                                    cronparser_int maxval,
+                                    std::bitset<64>& target) {
+    cronparser_int step = 1;
+    std::string_view rangePart = field;
+
+    // Handle "*/step" or "start-end/step"
+    auto slashPos = field.find('/');
+    if (slashPos != std::string_view::npos) {
+        rangePart = field.substr(0, slashPos);
+        std::string_view stepPart = field.substr(slashPos + 1);
+
+        if (stepPart.empty())
+            throw BadCronExpression("Step value missing after '/'");
+
+        step = ToCronParserInt(stepPart);
+        if (step < 1)
+            throw BadCronExpression("Step must be >= 1");
+    }
+
     cronparser_int firstValue = 0;
     cronparser_int lastValue = 0;
 
-    if (field.size() == 1 && field[0] == SPECIAL_CHARACTER_ASTERISK) {
+    if (rangePart.size() == 1 && rangePart[0] == SPECIAL_CHARACTER_ASTERISK) {
         firstValue = minval;
         lastValue = maxval;
-    } else if (!common::StringContains(field, SPECIAL_CHARACTER_HYPHEN)) {
-        firstValue = ToCronParserInt(field);
+    } else if (!common::StringContains(rangePart, SPECIAL_CHARACTER_HYPHEN)) {
+        firstValue = ToCronParserInt(rangePart);
         lastValue = firstValue;
     } else {
-        auto parts = common::StringSplit(field, SPECIAL_CHARACTER_HYPHEN);
-        if (parts.size () != 2)
-            throw BadCronExpression("Specified range requires two fields");
+        auto parts = common::StringSplit(rangePart, SPECIAL_CHARACTER_HYPHEN);
+        if (parts.size() != 2)
+            throw BadCronExpression("Range requires two values");
 
         firstValue = ToCronParserInt(parts[0]);
         lastValue = ToCronParserInt(parts[1]);
     }
 
-    if (firstValue > maxval || lastValue > maxval) {
-        throw BadCronExpression("Specified range exceeds maximum");
-    }
-    if (firstValue < minval || lastValue < minval) {
-        throw BadCronExpression("Specified range is less than minimum");
-    }
-    if (firstValue > lastValue) {
-        throw BadCronExpression("Specified range start exceeds range end");
-    }
+    // Validation
+    if (firstValue < minval || lastValue > maxval)
+        throw BadCronExpression("Range out of bounds");
 
-    return { firstValue, lastValue };
+    if (firstValue > lastValue)
+        throw BadCronExpression("Range start exceeds end");
+
+    for (cronparser_int val = firstValue; val <= lastValue; val += step) {
+        target.set(val - minval);
+    }
 }
 
 template <size_t SIZE>
 void CronExpression::SetCronField(std::string_view value,
                                   std::bitset<SIZE>& target,
-                                  cronparser_int const minValue,
-                                  cronparser_int const maxValue) {
-    // Check that cron field doesn't end with a comma.
-    if (value.length() > 0 &&
-        value[value.length() - 1] == SPECIAL_CHARACTER_COMMA) {
+                                  cronparser_int minValue,
+                                  cronparser_int maxValue) {
+    // Check that the field doesn't end with a comma
+    if (!value.empty() && value.back() == SPECIAL_CHARACTER_COMMA) {
         throw BadCronExpression("Value cannot end with comma");
     }
 
-    // Split the string with the ',' delimiter, if the fields are empty then
-    // generate an exception.
+    // Split on commas
     auto fields = common::StringSplit(value, SPECIAL_CHARACTER_COMMA);
     if (fields.empty()) {
         throw BadCronExpression("Cron expression cannot be parsed");
     }
 
     for (auto const& field : fields) {
-        if (!common::StringContains(field, '/')) {
-            auto [first, last] = CreateIntRange(field, minValue, maxValue);
-
-            for (cronparser_int i = first - minValue; i <= last - minValue;
-                 ++i) {
-                target.set(i);
-            }
-        } else {
-            auto parts = common::StringSplit(field, '/');
-            if (parts.size() != 2)
-                throw BadCronExpression("Incrementer must have two fields");
-
-            auto [first, last] = CreateIntRange(parts[0], minValue, maxValue);
-
-            if (!common::StringContains(parts[0], '-')) {
-                last = maxValue;
-            }
-
-            auto delta = ToCronParserInt(parts[1]);
-            if (delta <= 0)
-                throw BadCronExpression("Incrementer must be a positive value");
-
-            for (cronparser_int i = first - minValue; i <= last - minValue;
-                i += delta) {
-                target.set(i);
-            }
-        }
+        CreateIntRange(field, minValue, maxValue, target);
     }
 }
 
