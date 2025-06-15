@@ -94,7 +94,6 @@ std::tm CronExpression::getNextTriggerTime(const std::tm& start_time) {
     std::tm candidate = start_time;
     candidate.tm_sec += 1;
 
-    const int MAX_YEARS_AHEAD = 5;
     const int start_year = candidate.tm_year;
 
     while (true) {
@@ -175,10 +174,11 @@ cronparser_int CronExpression::ToCronParserInt(std::string_view text) {
     }
 }
 
+template <size_t N>
 void CronExpression::CreateIntRange(std::string_view field,
                                     cronparser_int minval,
                                     cronparser_int maxval,
-                                    std::bitset<64>& target) {
+                                    std::bitset<N>& target) {
     cronparser_int step = 1;
     std::string_view rangePart = field;
 

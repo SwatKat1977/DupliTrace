@@ -85,10 +85,11 @@ class CronExpression {
 
      cronparser_int ToCronParserInt(std::string_view text);
 
+    template <size_t N>
     void CreateIntRange(std::string_view field,
                         cronparser_int minval,
                         cronparser_int maxval,
-                        std::bitset<64>& target);
+                        std::bitset<N>& target);
 
      template <size_t SIZE>
      void SetCronField(std::string_view value, std::bitset<SIZE>& target,
