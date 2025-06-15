@@ -3,6 +3,8 @@ AM_INIT_AUTOMAKE([foreign subdir-objects])
 AC_CONFIG_SRCDIR([src/duplitrace_cli/main.cpp])
 AC_CONFIG_HEADERS([config.h])
 
+AC_PROG_CXX
+
 # Options
 AC_ARG_ENABLE([cli],
   [AS_HELP_STRING([--disable-cli], [Do not build the CLI frontend])],
