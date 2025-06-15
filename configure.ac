@@ -19,6 +19,6 @@ AC_CONFIG_FILES([
   Makefile
   src/Makefile
   src/duplitrace_cli/Makefile
-  src/duplitrace_svc/Makefile
+  src/duplitrace_indexer/Makefile
 ])
 AC_OUTPUT

@@ -13,9 +13,14 @@ src/bins/
 # Autoamke Intermediate Files
 aclocal.m4
 autom4te.cache/
+config.h
 config.h.in
 config.log
 config.status
 configure
 install-sh
+Makefile
+Makefile.in
 missing
+src/duplitrace_cli/Makefile
+src/duplitrace_indexer/Makefile
