@@ -135,9 +135,9 @@
     <ClCompile Include="..\common\ConfigManager.cpp" />
     <ClCompile Include="..\common\ConfigSetup.cpp" />
     <ClCompile Include="..\common\ConfigSetupItem.cpp" />
-    <ClCompile Include="..\common\cron_parser\CronParser.cpp" />
     <ClCompile Include="..\common\Platform.cpp" />
     <ClCompile Include="..\common\Utilities.cpp" />
+    <ClCompile Include="cron_parser\CronParser.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Service.cpp" />
   </ItemGroup>
@@ -146,14 +146,14 @@
     <ClInclude Include="..\common\ConfigManager.h" />
     <ClInclude Include="..\common\ConfigSetup.h" />
     <ClInclude Include="..\common\ConfigSetupItem.h" />
-    <ClInclude Include="..\common\cron_parser\CronParser.h" />
-    <ClInclude Include="..\common\cron_parser\CronParserConstants.h" />
     <ClInclude Include="..\common\Logger.h" />
     <ClInclude Include="..\common\LoggerSettings.h" />
     <ClInclude Include="..\common\Platform.h" />
     <ClInclude Include="..\common\Utilities.h" />
     <ClInclude Include="..\common\Version.h" />
     <ClInclude Include="ConfigurationLayout.h" />
+    <ClInclude Include="cron_parser\CronParser.h" />
+    <ClInclude Include="cron_parser\CronParserConstants.h" />
     <ClInclude Include="Service.h" />
   </ItemGroup>
   <ItemGroup>

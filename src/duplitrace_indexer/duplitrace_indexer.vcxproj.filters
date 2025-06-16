@@ -16,8 +16,8 @@
     <Filter Include="documentation">
       <UniqueIdentifier>{dbb6579b-0c44-48e9-9659-1ca95983d404}</UniqueIdentifier>
     </Filter>
-    <Filter Include="common\cron parser">
-      <UniqueIdentifier>{6b2192ea-3596-4bad-ae83-1f5174c68312}</UniqueIdentifier>
+    <Filter Include="CronParser">
+      <UniqueIdentifier>{b69aab4e-c5ae-4100-9349-6e2394b6834c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -42,8 +42,8 @@
     <ClCompile Include="..\common\Utilities.cpp">
       <Filter>common</Filter>
     </ClCompile>
-    <ClCompile Include="..\common\cron_parser\CronParser.cpp">
-      <Filter>common\cron parser</Filter>
+    <ClCompile Include="cron_parser\CronParser.cpp">
+      <Filter>CronParser</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -80,11 +80,11 @@
     <ClInclude Include="..\common\Utilities.h">
       <Filter>common</Filter>
     </ClInclude>
-    <ClInclude Include="..\common\cron_parser\CronParser.h">
-      <Filter>common\cron parser</Filter>
+    <ClInclude Include="cron_parser\CronParser.h">
+      <Filter>CronParser</Filter>
     </ClInclude>
-    <ClInclude Include="..\common\cron_parser\CronParserConstants.h">
-      <Filter>common\cron parser</Filter>
+    <ClInclude Include="cron_parser\CronParserConstants.h">
+      <Filter>CronParser</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

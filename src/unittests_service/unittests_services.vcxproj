@@ -102,12 +102,12 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\duplitrace_indexer\unittests_services.vcxproj">
-      <Project>{23eecbe0-79c1-4eb9-b2f0-e9b4102e02f7}</Project>
-    </ProjectReference>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <ProjectReference Include="..\duplitrace_indexer\duplitrace_indexer.vcxproj">
+      <Project>{23eecbe0-79c1-4eb9-b2f0-e9b4102e02f7}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
