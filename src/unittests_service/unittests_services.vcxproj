@@ -102,7 +102,7 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\duplitrace_indexer\duplitrace_indexer.vcxproj">
+    <ProjectReference Include="..\duplitrace_indexer\unittests_services.vcxproj">
       <Project>{23eecbe0-79c1-4eb9-b2f0-e9b4102e02f7}</Project>
     </ProjectReference>
   </ItemGroup>
