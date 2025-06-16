@@ -9,3 +9,7 @@ endif
 if BUILD_SERVICE
 SUBDIRS += duplitrace_indexer
 endif
+
+if BUILD_SERVICE_UNITTESTS
+SUBDIRS += unittests_service
+endif
