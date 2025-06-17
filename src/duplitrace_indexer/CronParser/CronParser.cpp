@@ -99,7 +99,7 @@ std::tm CronExpression::getNextTriggerTime(const std::tm& start_time) {
     while (true) {
         std::mktime(&candidate);  // Normalize time
 
-        if (candidate.tm_year > start_year + MAX_YEARS_AHEAD) {
+        if (candidate.tm_year >= start_year + MAX_YEARS_AHEAD) {
             throw BadCronExpression("No cron match found within 5 years");
         }
 
@@ -151,9 +151,25 @@ std::tm CronExpression::getNextTriggerTime(const std::tm& start_time) {
         }
 
         // Day-of-month or day-of-week logic
+        bool dom_is_star = days_of_month_.count() == 31; // all 31 bits set
+        bool dow_is_star = days_of_week_.count() == 7;   // all 7 bits set
+
         bool dom_ok = days_of_month_.test(candidate.tm_mday - 1);
         bool dow_ok = days_of_week_.test(candidate.tm_wday);
-        if (!(dom_ok || dow_ok)) {
+
+        // Rules:
+        // - If both are restricted → require both match
+        // - If one is wildcard → only require the other to match
+        // - If both are wildcards → always match
+
+        bool match = false;
+        if (!dom_is_star && !dow_is_star) {
+            match = dom_ok && dow_ok;
+        } else {
+            match = dom_ok && dow_is_star || dow_ok && dom_is_star;
+        }
+
+        if (!match) {
             candidate.tm_mday += 1;
             candidate.tm_hour = getLowestSetBit(hours_);
             candidate.tm_min = getLowestSetBit(minutes_);

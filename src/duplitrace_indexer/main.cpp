@@ -23,12 +23,13 @@ Copyright 2024 DupliTrace Development Team
 #include "argparse/argparse.hpp"
 #include "ConfigurationLayout.h"
 #include "Service.h"
-#include "cron_parser/CronParser.h"
+#include "CronParser/CronParser.h"
 
 const char DEFAULT_CONFIG_FILE[] = "./config.cfg";
 
 int main (int argc, char** argv) {
     bool verbose = false;
+    printf("Verbose? %d\n", verbose);
 
     std::bitset<10> target;
     target.set (9);
@@ -41,7 +42,7 @@ int main (int argc, char** argv) {
     std::cout << "=> Hours        : '" << exp.Hours () << "'\n";
     std::cout << "=> Days of Week : '" << exp.DaysOfWeek () << "'\n";
 
-    for (int i = 0; i < 61; i++) {
+    for (int i = 0; i < 51; i++) {
         std::time_t t = std::time (nullptr);
         std::tm start_time = *std::localtime (&t);
         std::tm next_time = exp.getNextTriggerTime (start_time);

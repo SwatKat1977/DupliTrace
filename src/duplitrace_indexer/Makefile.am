@@ -10,7 +10,7 @@ AM_CPPFLAGS = -g -std=c++17 -Wall -Wextra -fPIC \
 
 bin_PROGRAMS = duplitrace_svc
 duplitrace_svc_SOURCES = main.cpp \
-                         cron_parser/CronParser.cpp \
+                         CronParser/CronParser.cpp \
                          ../common/Utilities.cpp \
                          ../common/ConfigSetup.cpp \
                          ../common/ConfigSetupItem.cpp \

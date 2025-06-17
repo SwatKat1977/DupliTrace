@@ -5,6 +5,7 @@ bin_PROGRAMS = unittests_service
 # Compiler and linker flags
 AM_CPPFLAGS = -g -std=c++17 -Wall -Wextra -fPIC  \
               -I.                                \
+              -I../common                        \
               -I../duplitrace_indexer            \
               -I$(DUPLITRACE_GOOGLETEST_INCLUDE)
 
@@ -13,7 +14,10 @@ unittests_service_LDADD = -L$(DUPLITRACE_GOOGLETEST_LIB) \
                           -lgtest_main \
                           -lpthread
 
-unittests_service_SOURCES = main.cpp
+unittests_service_SOURCES = main.cpp \
+                            test_CronParser.cpp \
+                            ../duplitrace_indexer/CronParser/CronParser.cpp \
+                            ../common/Utilities.cpp
 
 .PHONY: copy-bin
 copy-bin:
